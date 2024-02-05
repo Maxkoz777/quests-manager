@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,40 +8,42 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { Link } from "react-router-dom";
+import { LogoutButton } from "./Logout";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 
-const pages = [
-  ["Home", "/"],
-  ["Login", "/login"],
-  ["Register", "/register"],
-];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const pages = [
+//   ["Home", "/"],
+//   ["Login", "/login"],
+//   ["Register", "/register"],
+// ];
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export const MyNavBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const isAuthenticated = useIsAuthenticated();
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+  //   null
+  // );
+
+  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElUser(event.currentTarget);
+  // };
+
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
 
   return (
     <AppBar>
@@ -52,7 +54,6 @@ export const MyNavBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -96,14 +97,26 @@ export const MyNavBar = () => {
                 justifyContent: { md: "" },
               }}
             >
-              {pages.map((page, id) => (
-                <MenuItem key={id} onClick={handleCloseNavMenu}>
-                  {/* <Typography textAlign="center"></Typography> */}
-                  <Link to={{ pathname: page[1] }}>
-                    <Button>{page[0]}</Button>
-                  </Link>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                {isAuthenticated() && (
+                  <>
+                    <Link to={{ pathname: "/" }}>
+                      <Button>Home</Button>
+                    </Link>
+                    <LogoutButton />
+                  </>
+                )}
+                {!isAuthenticated() && (
+                  <>
+                    <Link to={{ pathname: "/login" }}>
+                      <Button>Login</Button>
+                    </Link>
+                    <Link to={{ pathname: "/register" }}>
+                      <Button>Register</Button>
+                    </Link>
+                  </>
+                )}
+              </MenuItem>
             </Menu>
           </Box>
           <TaskAltIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -111,7 +124,6 @@ export const MyNavBar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -125,24 +137,33 @@ export const MyNavBar = () => {
           >
             Quests
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page, id) => (
-              <Link to={{ pathname: page[1] }}>
-                <Button
-                  key={id}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page[0]}
-                </Button>
-              </Link>
-            ))}
+          <Box
+            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: "1" }}
+          >
+            {isAuthenticated() && (
+              <>
+                <Link to={{ pathname: "/" }}>
+                  <Button>Home</Button>
+                </Link>
+                <LogoutButton />
+              </>
+            )}
+            {!isAuthenticated() && (
+              <>
+                <Link to={{ pathname: "/login" }}>
+                  <Button variant="contained">Login</Button>
+                </Link>
+                <Link to={{ pathname: "/register" }}>
+                  <Button variant="contained">Register</Button>
+                </Link>
+              </>
+            )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -167,7 +188,7 @@ export const MyNavBar = () => {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+          </Box> */}
         </Toolbar>
       </Container>
     </AppBar>
