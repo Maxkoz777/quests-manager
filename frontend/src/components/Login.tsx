@@ -10,43 +10,67 @@ import {
   Grid,
 } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { API_URL } from "../utils/ApiUtils";
+import { Link, useNavigate } from "react-router-dom";
+// import { API_URL } from "../utils/ApiUtils";
+import axios, { AxiosError } from "axios";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { User } from "../models/User";
+import { Base } from "./Base";
 
 interface Prop {
   token: string;
 }
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
-  const { setItem } = useLocalStorage();
-  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [loginSuccess, setLoginSuccess] = useState(true);
+  const signIn = useSignIn();
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    fetch(`${API_URL}/login`, {
-      method: "post",
-      body: JSON.stringify({ email, password }),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res: Response) => res.json())
-      .then((data: Prop) => {
-        const { token } = data;
-        setToken(token);
-        setLoginSuccess(true);
-      })
-      .catch((err: Error) => {
-        console.log(err.message);
-        setLoginSuccess(false);
+  const handleLogin = async () => {
+    // `${API_URL}/login`
+    try {
+      const response = await axios.post<Prop>(
+        "https://dummyjson.com/auth/login",
+        JSON.stringify({ username: user, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const { token } = response.data;
+
+      const success = signIn<User>({
+        auth: {
+          token: token,
+          type: "Bearer",
+        },
+        userState: {
+          user: user,
+        },
+        expiresIn: 2, //minutes,
       });
 
-    setItem("token", token);
+      setLoginSuccess(success);
+    } catch (err) {
+      if (err && err instanceof AxiosError) {
+        setError(err.response?.data.message);
+      } else if (err && err instanceof Error) {
+        setError(err.message);
+      }
+
+      console.error("Error: ", err);
+    }
+
+    if (loginSuccess) {
+      navigate("/");
+    }
   };
 
   return (
-    <>
+    <Base>
       <Container maxWidth="xs">
         <CssBaseline />
         <Box
@@ -66,12 +90,12 @@ export const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
+              id="username"
+              label="Username"
+              name="username"
               autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
             />
 
             <TextField
@@ -88,7 +112,7 @@ export const Login = () => {
               }}
             />
 
-            {loginSuccess ? "Success" : "Invalid email or password"}
+            {loginSuccess ? "" : error}
 
             <Button
               fullWidth
@@ -106,6 +130,6 @@ export const Login = () => {
           </Box>
         </Box>
       </Container>
-    </>
+    </Base>
   );
 };
