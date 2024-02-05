@@ -12,6 +12,7 @@ import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../utils/ApiUtils";
+import { Base } from "./Base";
 
 export const Register = () => {
   const [name, setName] = useState("");
@@ -31,7 +32,7 @@ export const Register = () => {
   };
 
   return (
-    <>
+    <Base>
       <Container maxWidth="xs">
         <CssBaseline />
         <Box
@@ -101,6 +102,6 @@ export const Register = () => {
           </Box>
         </Box>
       </Container>
-    </>
+    </Base>
   );
 };
