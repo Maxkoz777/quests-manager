@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { API_URL } from "../utils/ApiUtils";
+import { API_URL } from "../utils/ApiUtils";
 import axios, { AxiosError } from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { User } from "../models/User";
@@ -30,10 +30,9 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // `${API_URL}/login`
     try {
       const response = await axios.post<Prop>(
-        "https://dummyjson.com/auth/login",
+        `${API_URL}/auth/login`,
         JSON.stringify({ username: user, password }),
         {
           headers: { "Content-Type": "application/json" },
