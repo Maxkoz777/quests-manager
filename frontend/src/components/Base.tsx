@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from "react";
-import { Container, Toolbar } from "@mui/material";
+import { Box, Container, Toolbar } from "@mui/material";
 import { MyNavBar } from "./MyNavBar";
 
 interface Prop {
@@ -8,12 +8,12 @@ interface Prop {
 
 export const Base = ({ children }: Prop) => {
   return (
-    <main className="base">
+    <Box>
       <Container maxWidth="xl" className="mt-3">
         <MyNavBar />
         <Toolbar sx={{ marginBottom: "1rem" }} />
-        <div>{children}</div>
+        <Box>{children}</Box>
       </Container>
-    </main>
+    </Box>
   );
 };
