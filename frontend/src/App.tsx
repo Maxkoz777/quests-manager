@@ -4,6 +4,7 @@ import { Home } from "./components/Home";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
+import { TaskDetail } from "./components/TaskDetail";
 
 export const App = () => {
   return (
@@ -12,6 +13,7 @@ export const App = () => {
       <Route path="/register" element={<Register />} />
       <Route element={<AuthOutlet fallbackPath="/login" />}>
         <Route path="/" element={<Home />} />
+        <Route path="/task-detail" element={<TaskDetail />} />
       </Route>
     </Routes>
   );
