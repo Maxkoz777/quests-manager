@@ -37,10 +37,6 @@ export const Home = () => {
     }
   }, [authHeader]);
 
-  /**
-   * Truncate text such that all cards will have same max length of texts
-   */
-
   return (
     <Base>
       {loading ? (
