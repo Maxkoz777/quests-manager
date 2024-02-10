@@ -46,19 +46,21 @@ export const Home = () => {
       {loading ? (
         "Loading..."
       ) : (
-        <Grid
-          sx={{ height: "100%", display: "flex" }}
-          container
-          direction="row"
-          alignItems="stretch"
-          spacing={2}
-        >
+        <Grid container spacing={2}>
           {todoItems &&
             todoItems.todos.map((item, key) => (
-              <Grid flex={"1"} item xs={12} sm={6} md={3} key={key}>
+              <Grid item xs={12} sm={6} md={3} key={key}>
                 <Card key={key}>
                   <CardContent>
-                    <Typography variant="h6" component="div">
+                    <Typography
+                      variant="h6"
+                      component="div"
+                      sx={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
                       {item.todo}
                     </Typography>
                     <Typography variant="h6" component="div">
@@ -70,6 +72,9 @@ export const Home = () => {
                       >
                         {item.completed.toString()}
                       </span>
+                    </Typography>
+                    <Typography variant="h6" component="div">
+                      Address:
                     </Typography>
                   </CardContent>
                 </Card>
