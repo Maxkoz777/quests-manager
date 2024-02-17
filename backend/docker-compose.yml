@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: security
+      POSTGRES_DB: quests
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -14,18 +14,25 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+
   keycloak:
     container_name: keycloak
-    build:
-      dockerfile: ./prototype/keycloak/Dockerfile
-    depends_on: [db]
+    image: quay.io/keycloak/keycloak:23.0.6
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "8080:8080"
+    command: ["start-dev"]
     networks:
       - postgres
+    depends_on:
+      - db
     restart: unless-stopped
+
 networks:
   postgres:
     driver: bridge
+
 volumes:
   postgres:
