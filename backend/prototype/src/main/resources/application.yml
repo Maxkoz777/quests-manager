@@ -19,5 +19,14 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/prototype
 
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: prototype
+      client-secret: wV0RSSaErRX2rBsdIPcXjJ5LmYj5hEdk
+openapi:
+  dev-url: http://localhost:8081
+  prod-url: http://localhost:8081
+
 server:
   port: 8081
