@@ -1,1 +1,32 @@
+spring:
+  datasource:
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:password}
+    url: jdbc:postgresql://${IP:localhost}:${DB_PORT:5432}/${DB_NAME:quests}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/prototype
 
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: prototype
+      client-secret: wV0RSSaErRX2rBsdIPcXjJ5LmYj5hEdk
+openapi:
+  dev-url: http://localhost:8081
+  prod-url: http://localhost:8081
+
+server:
+  port: 8081
