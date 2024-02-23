@@ -92,4 +92,4 @@ If you have a suggestion that would make this better, please fork the repo and c
 ## :v: Credits
 This project was done by :
 
-[Kostarev Grigorii](https://github.com/none-word), [Maxim Kozhinov](https://github.com/Maxkoz777), [Kim](https://github.com/Homa3030) and [Evgeny Afanasev](https://github.com/AfanasevEvgeny).
+[Kostarev Grigorii](https://github.com/none-word), [Maxim Kozhinov](https://github.com/Maxkoz777), [Kim Fom](https://github.com/kimfom01)
