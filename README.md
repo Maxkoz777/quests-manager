@@ -1,4 +1,4 @@
-# QuizWebEngine
+# Quests Manager
 
 ## :wave: About this project
 
@@ -6,11 +6,11 @@ Our innovative platform empowers individuals to earn money by completing small t
 
 ## :game_die: Usage
 
-You can create task and pay money; or you can peek tasks and get money.
+You can create task and pay money; or you can pick, execute tasks and get money.
 
 ## :heavy_check_mark: Business Goals and Objectives
 
-Our primary goal is to create a mutually beneficial ecosystem where individuals can monetize their time and skills, while other people gain accomplish tasks efficiently.
+Our primary goal is to create a mutually beneficial ecosystem where individuals can monetize their time and skills, while other people accomplish tasks and save time.
 
 ## :fire: Features
 
@@ -20,7 +20,7 @@ Our primary goal is to create a mutually beneficial ecosystem where individuals 
 
 ## :hotsprings: Frameworks
 - **Back:** java, spring boot, hibernate, PostgreSQL, Swagger
-- **Front:** JavaScript, React
+- **Front:** TypeScript, React, MUI
 - **Deploy:** Yandex Cloud, git
 
 ## :heavy_exclamation_mark: Prerequisites
@@ -58,7 +58,7 @@ ToDo
 
 ## :art: Design
 
-ToDo
+In Progress
 
 ## :hammer: Architecture
 
@@ -71,7 +71,7 @@ ToDo: in progress
 ## :link: Links
 - [Swagger]()
 - [Backend]()
-- [Figma]()
+- [Figma](https://www.figma.com/file/iJMwEqlGgj2MKRnQxkD9uK/Quests-Web-App-Design-Board?type=design&node-id=0%3A1&mode=design&t=LGLLjfQcIsUiKLlX-1)
 
 ## :movie_camera: Demo
 
