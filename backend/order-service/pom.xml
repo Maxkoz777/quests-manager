@@ -8,10 +8,9 @@
 		<version>1.0</version>
 	</parent>
 
-	<artifactId>prototype</artifactId>
+	<artifactId>order-service</artifactId>
 	<version>1.0</version>
-	<name>prototype</name>
-	<description>prototype</description>
+	<name>order-service</name>
 
 	<dependencies>
 		<dependency>
