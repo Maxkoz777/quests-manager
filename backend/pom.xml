@@ -8,6 +8,7 @@
   <modules>
     <module>eureka-server</module>
     <module>order-service</module>
+    <module>user-service</module>
   </modules>
   <version>1.0</version>
   <name>backend</name>
