@@ -11,7 +11,7 @@ export const Base = ({ children }: Prop) => {
     <Box>
       <Container maxWidth="xl" className="mt-3">
         <MyNavBar />
-        <Toolbar sx={{ marginBottom: "1rem" }} />
+        <Toolbar sx={{ marginBottom: "2rem" }} />
         <Box>{children}</Box>
       </Container>
     </Box>
