@@ -11,7 +11,7 @@ import {
 import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { API_URL } from "../utils/ApiUtils";
+import { AUTH_API_URL } from "../utils/ApiUtils";
 import { Base } from "./Base";
 
 export const Register = () => {
@@ -20,7 +20,7 @@ export const Register = () => {
   const [password, setPassword] = useState("");
 
   const handleRegister = () => {
-    fetch(`${API_URL}/register`, {
+    fetch(`${AUTH_API_URL}/register`, {
       method: "post",
       body: JSON.stringify({ name, email, password }),
       headers: { "Content-Type": "application/json" },
