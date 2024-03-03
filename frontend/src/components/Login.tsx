@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL } from "../utils/ApiUtils";
+import { AUTH_API_URL } from "../utils/ApiUtils";
 import axios, { AxiosError } from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { User } from "../models/User";
@@ -22,7 +22,7 @@ interface Prop {
 }
 
 export const Login = () => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState<string>("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string>("");
   const [loginSuccess, setLoginSuccess] = useState(true);
@@ -32,7 +32,7 @@ export const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post<Prop>(
-        `${API_URL}/auth/login`,
+        `${AUTH_API_URL}/auth/login`,
         JSON.stringify({ username: user, password }),
         {
           headers: { "Content-Type": "application/json" },
@@ -111,7 +111,7 @@ export const Login = () => {
               }}
             />
 
-            {loginSuccess ? "" : error}
+            {loginSuccess ? "" : "Invalid username or password"}
 
             <Button
               fullWidth
