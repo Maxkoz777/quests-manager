@@ -5,6 +5,7 @@ import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import { TaskDetail } from "./components/TaskDetail";
+import { NewTask } from "./components/NewTask";
 
 export const App = () => {
   return (
@@ -14,6 +15,7 @@ export const App = () => {
       <Route element={<AuthOutlet fallbackPath="/login" />}>
         <Route path="/" element={<Home />} />
         <Route path="/task-detail" element={<TaskDetail />} />
+        <Route path="/new-task" element={<NewTask />} />
       </Route>
     </Routes>
   );
