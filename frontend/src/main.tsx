@@ -5,6 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import createStore from "react-auth-kit/createStore";
 import AuthProvider from "react-auth-kit";
 import { User } from "./models/User.ts";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const store = createStore<User>({
   authName: "_auth",
@@ -23,5 +25,17 @@ root.render(
         <App />
       </BrowserRouter>
     </AuthProvider>
+    <ToastContainer
+      position="bottom-center"
+      autoClose={1500}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="dark"
+    />
   </React.StrictMode>
 );
