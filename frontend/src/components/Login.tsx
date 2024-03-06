@@ -1,7 +1,6 @@
 import { LockOutlined } from "@mui/icons-material";
 import {
   Container,
-  CssBaseline,
   Box,
   Avatar,
   Typography,
@@ -71,7 +70,6 @@ export const Login = () => {
   return (
     <Base>
       <Container maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             mt: 20,

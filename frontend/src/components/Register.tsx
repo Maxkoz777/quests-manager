@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Grid,
   TextField,
   Typography,
@@ -34,7 +33,6 @@ export const Register = () => {
   return (
     <Base>
       <Container maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             mt: 20,
