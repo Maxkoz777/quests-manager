@@ -99,12 +99,18 @@ export const MyNavBar = () => {
               >
                 <MenuItem onClick={handleCloseNavMenu}>
                   {isAuthenticated() && (
-                    <>
-                      <Link to={{ pathname: "/" }}>
-                        <Button>Home</Button>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "20px",
+                      }}
+                    >
+                      <Link to={{ pathname: "/new-task" }}>
+                        <Button variant="contained">Create Task</Button>
                       </Link>
                       <LogoutButton />
-                    </>
+                    </Box>
                   )}
                   {!isAuthenticated() && (
                     <>
@@ -153,12 +159,12 @@ export const MyNavBar = () => {
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: "1" }}
           >
             {isAuthenticated() && (
-              <>
-                <Link to={{ pathname: "/" }}>
-                  <Button>Home</Button>
+              <Box sx={{ display: "flex", gap: "20px" }}>
+                <Link to={{ pathname: "/new-task" }}>
+                  <Button variant="contained">Create Task</Button>
                 </Link>
                 <LogoutButton />
-              </>
+              </Box>
             )}
             {!isAuthenticated() && (
               <>
