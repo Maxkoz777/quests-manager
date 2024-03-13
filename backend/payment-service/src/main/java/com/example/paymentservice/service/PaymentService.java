@@ -16,20 +16,16 @@ public class PaymentService {
     @Autowired
     private KafkaTemplate<String, PaymentReservationMessage> kafkaTemplate;
 
-    public void reservePayment() {
+    @KafkaListener(topics = "payment.initiate")
+    public void receivePaymentRequest(PaymentCreationMessage message) {
+        log.info("Received message from order service: {}", message);
         log.info("Sending predefined message to order service");
         var paymentReservationMessage = new PaymentReservationMessage(
-            "traceId", "orderId", PaymentStatus.SUCCESSFUL, "some message"
+            "traceId", message.orderId(), PaymentStatus.SUCCESSFUL, "some message"
         );
         var sendingResult = kafkaTemplate.send(
             "payment.reservation.updated", paymentReservationMessage);
         sendingResult.whenComplete((result, error) -> log.info("Message successfully sent"));
-    }
-
-    @KafkaListener(topics = "payment.initiate")
-    public void receivePaymentRequest(PaymentCreationMessage message) {
-        log.info("Received message from order service: {}", message);
-        this.reservePayment();
     }
 
 }

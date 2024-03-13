@@ -1,5 +1,6 @@
 package com.quests.backend.controller;
 
+import com.quests.backend.model.dto.OrderCreationRequest;
 import com.quests.backend.model.entity.Order;
 import com.quests.backend.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,8 +66,8 @@ public class OrderController {
         )
     })
     @PostMapping
-    public ResponseEntity<Long> createOrder(@RequestBody Order order) {
-        orderService.createOrder(order);
+    public ResponseEntity<Long> createOrder(@RequestBody OrderCreationRequest orderCreationRequest) {
+        orderService.createOrder(orderCreationRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -129,9 +130,9 @@ public class OrderController {
         )
     })
     @PostMapping("/execute/{orderId}")
-    public ResponseEntity<String> initTaskExecution(@PathVariable long orderId) {
+    public ResponseEntity<String> initTaskExecution(@PathVariable("orderId") long orderId) {
         log.info("Initiated task execution with orderId={}", orderId);
-        orderService.initTaskExecution();
+        orderService.executeOrder(orderId);
         return ResponseEntity.ok("Task execution request is sent for processing");
     }
 }

@@ -1,7 +1,7 @@
 package com.example.common.events;
 
-public record NotificationMessage(
+public record FraudCheckMessage(
     String traceId,
-    long userId,
+    long orderId,
     String content
 ){}

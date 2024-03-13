@@ -3,6 +3,6 @@ package com.example.common.events;
 public record PaymentCreationMessage(
     String jwt,
     String traceId,
-    String orderId,
+    long orderId,
     double cost
 ) {}
