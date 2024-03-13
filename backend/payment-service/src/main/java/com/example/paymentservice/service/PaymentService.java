@@ -19,7 +19,7 @@ public class PaymentService {
     public void reservePayment() {
         log.info("Sending predefined message to order service");
         var paymentReservationMessage = new PaymentReservationMessage(
-            "traceId", "orderId", PaymentStatus.SUCCESSFUL, "some message"
+            "traceId", 1234, PaymentStatus.SUCCESSFUL, "some message"
         );
         var sendingResult = kafkaTemplate.send(
             "payment.reservation.updated", paymentReservationMessage);
