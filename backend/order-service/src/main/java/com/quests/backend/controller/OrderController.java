@@ -130,9 +130,9 @@ public class OrderController {
         )
     })
     @PostMapping("/execute/{orderId}")
-    public ResponseEntity<String> initTaskExecution(@PathVariable long orderId) {
+    public ResponseEntity<String> initTaskExecution(@PathVariable("orderId") long orderId) {
         log.info("Initiated task execution with orderId={}", orderId);
-        orderService.initTaskExecution();
+        orderService.executeOrder(orderId);
         return ResponseEntity.ok("Task execution request is sent for processing");
     }
 }
