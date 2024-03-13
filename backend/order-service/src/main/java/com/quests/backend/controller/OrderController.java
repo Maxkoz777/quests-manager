@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -117,9 +116,22 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<String> initTaskExecution() {
+    @Operation(
+        summary = "Execute order",
+        description = "Take an order with provided id for execution"
+    )
+    @ApiResponses({
+        @ApiResponse(
+            responseCode = "200"
+        ),
+        @ApiResponse(
+            responseCode = "401"
+        )
+    })
+    @PostMapping("/execute/{orderId}")
+    public ResponseEntity<String> initTaskExecution(@PathVariable long orderId) {
+        log.info("Initiated task execution with orderId={}", orderId);
         orderService.initTaskExecution();
-        return ResponseEntity.ok("execution process finished");
+        return ResponseEntity.ok("Task execution request is sent for processing");
     }
 }

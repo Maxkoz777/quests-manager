@@ -1,5 +1,6 @@
 package com.quests.backend.service;
 
+import com.example.common.events.NotificationMessage;
 import com.example.common.events.PaymentCreationMessage;
 import com.example.common.events.PaymentReservationMessage;
 import com.quests.backend.model.entity.Order;
@@ -20,6 +21,9 @@ public class OrderService {
 
     @Autowired
     private KafkaTemplate<String, PaymentCreationMessage> kafkaTemplate;
+
+    @Autowired
+    private KafkaTemplate<String, NotificationMessage> notificationMessageKafkaTemplate;
 
     private final OrderRepository orderRepository;
 
@@ -50,7 +54,11 @@ public class OrderService {
     }
 
     @KafkaListener(topics = "payment.reservation.updated")
-    public void receiveMessage(PaymentReservationMessage message) {
+    public void processPaymentNotification(PaymentReservationMessage message) {
         log.info("Received payment reservation message: {}", message);
+        var notification = new NotificationMessage(message.traceId(), "userId",
+                                                   "Payment validated, the task can be executed");
+        log.info("Sending payment notification to user");
+        notificationMessageKafkaTemplate.send("user.notification.order.update", notification);
     }
 }
