@@ -2,10 +2,10 @@ spring:
   application:
     name: configuration
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: localhost:9093
 
 server:
-  port: 8085
+  port: 8084
 
 eureka:
   client:

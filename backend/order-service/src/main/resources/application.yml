@@ -20,6 +20,15 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/prototype
+  kafka:
+    bootstrap-servers: localhost:9093
+    consumer:
+      group-id: order-consumer-group
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.common.events
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 springdoc:
   swagger-ui:
