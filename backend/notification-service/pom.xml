@@ -30,6 +30,12 @@
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.quests</groupId>
+      <artifactId>common-lib</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
