@@ -64,10 +64,10 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 
-    public void initTaskExecution() {
-        log.info("Payment process initiated");
+    public void executeOrder(long orderId) {
+        log.info("Payment process initiated for order {}", orderId);
         var traceId = UUID.randomUUID().toString();
-        var paymentMessage = new PaymentCreationMessage("jwt", traceId, 1234, 12.34);
+        var paymentMessage = new PaymentCreationMessage("jwt", traceId, orderId, 12.34);
         kafkaTemplate.send("payment.initiate", paymentMessage);
         log.info("Payment process initiating, returning result to client");
     }
@@ -75,9 +75,16 @@ public class OrderService {
     @KafkaListener(topics = "payment.reservation.updated")
     public void processPaymentNotification(PaymentReservationMessage message) {
         log.info("Received payment reservation message: {}", message);
-        var notification = new NotificationMessage(message.traceId(), 1234,
+        var notification = new NotificationMessage(message.traceId(), message.orderId(),
                                                    "Payment validated, the task can be executed");
         log.info("Sending payment notification to user");
+        var orderOptional = orderRepository.findById(message.orderId());
+        if (orderOptional.isPresent()) {
+            var order = orderOptional.get();
+            order.setOrderStatus(OrderStatus.IN_PROGRESS);
+            log.info("Updating the status for order {}", message.orderId());
+            orderRepository.saveAndFlush(order);
+        }
         notificationKafkaTemplate.send("user.notification.order.update", notification)
             .whenComplete((result, error) -> log.info("Notification successfully sent"));
     }
@@ -86,7 +93,11 @@ public class OrderService {
     public void processFraudValidationResponse(FraudResultMessage fraudResultMessage) {
         log.info("Received fraud validation message: {}", fraudResultMessage);
         var orderOptional = orderRepository.findById(fraudResultMessage.orderId());
-        orderOptional.ifPresent(order -> order.setOrderStatus(OrderStatus.CREATED));
-        log.info("Updating the status for order {}", fraudResultMessage.orderId());
+        if (orderOptional.isPresent()) {
+            var order = orderOptional.get();
+            order.setOrderStatus(OrderStatus.CREATED);
+            log.info("Updating the status for order {}", fraudResultMessage.orderId());
+            orderRepository.saveAndFlush(order);
+        }
     }
 }
