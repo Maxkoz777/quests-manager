@@ -6,6 +6,8 @@ import com.example.common.events.NotificationMessage;
 import com.example.common.events.PaymentCreationMessage;
 import com.example.common.events.PaymentReservationMessage;
 import com.example.common.events.enums.OrderStatus;
+import com.quests.backend.model.OrderMapper;
+import com.quests.backend.model.dto.OrderCreationRequest;
 import com.quests.backend.model.entity.Order;
 import com.quests.backend.repository.OrderRepository;
 import java.util.List;
@@ -33,6 +35,7 @@ public class OrderService {
     private KafkaTemplate<String, FraudCheckMessage> fraudKafkaTemplate;
 
     private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
 
     public List<Order> getAllOrders() {
         var orders = orderRepository.findAll();
@@ -40,9 +43,10 @@ public class OrderService {
         return orders;
     }
 
-    public void createOrder(Order order) {
-        log.info("Creating order \"{}\"", order.getTitle());
+    public void createOrder(OrderCreationRequest orderCreationRequest) {
+        log.info("Creating order \"{}\"", orderCreationRequest.title());
         var traceId = UUID.randomUUID().toString();
+        var order = orderMapper.getOrderFromRequest(orderCreationRequest);
         order.setOrderStatus(OrderStatus.INITIATED);
         orderRepository.save(order);
         log.info("Order with id={} created", order.getId());
