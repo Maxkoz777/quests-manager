@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: user
+  datasource:
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:password}
+    url: jdbc:postgresql://${IP:localhost}:${DB_PORT:5432}/${DB_NAME:quests}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          create_schemas: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/prototype
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: prototype
+      client-secret: wV0RSSaErRX2rBsdIPcXjJ5LmYj5hEdk
+openapi:
+  dev-url: http://localhost:8082
+  prod-url: http://localhost:8082
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

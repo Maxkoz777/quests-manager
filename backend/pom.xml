@@ -7,6 +7,11 @@
   <packaging>pom</packaging>
   <modules>
     <module>eureka-server</module>
+    <module>order-service</module>
+    <module>user-service</module>
+    <module>payment-service</module>
+    <module>gateway</module>
+    <module>common-lib</module>
   </modules>
   <version>1.0</version>
   <name>backend</name>
