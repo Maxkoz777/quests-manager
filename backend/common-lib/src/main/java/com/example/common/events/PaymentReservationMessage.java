@@ -4,7 +4,7 @@ import com.example.common.events.enums.PaymentStatus;
 
 public record PaymentReservationMessage(
     String traceId,
-    String orderId,
+    long orderId,
     PaymentStatus status,
     String message
 ) {}

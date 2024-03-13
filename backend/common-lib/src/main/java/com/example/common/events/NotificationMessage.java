@@ -2,6 +2,6 @@ package com.example.common.events;
 
 public record NotificationMessage(
     String traceId,
-    String userId,
+    long userId,
     String content
 ){}
