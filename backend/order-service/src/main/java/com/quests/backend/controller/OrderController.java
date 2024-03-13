@@ -1,5 +1,6 @@
 package com.quests.backend.controller;
 
+import com.quests.backend.model.dto.OrderCreationRequest;
 import com.quests.backend.model.entity.Order;
 import com.quests.backend.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,8 +66,8 @@ public class OrderController {
         )
     })
     @PostMapping
-    public ResponseEntity<Long> createOrder(@RequestBody Order order) {
-        orderService.createOrder(order);
+    public ResponseEntity<Long> createOrder(@RequestBody OrderCreationRequest orderCreationRequest) {
+        orderService.createOrder(orderCreationRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
