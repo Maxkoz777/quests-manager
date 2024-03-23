@@ -14,7 +14,7 @@ export const App = () => {
       <Route path="/register" element={<Register />} />
       <Route element={<AuthOutlet fallbackPath="/login" />}>
         <Route path="/" element={<Home />} />
-        <Route path="/task-detail" element={<TaskDetail />} />
+        <Route path="/task-detail/:id" element={<TaskDetail />} />
         <Route path="/new-task" element={<NewTask />} />
       </Route>
     </Routes>
