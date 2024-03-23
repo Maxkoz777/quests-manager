@@ -10,60 +10,72 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AUTH_API_URL } from "../utils/ApiUtils";
-import axios, { AxiosError } from "axios";
+import {
+  VITE_AUTH_LOGIN_URL,
+  VITE_AUTH_GRANT_TYPE,
+  VITE_AUTH_CLIENT_ID,
+  VITE_AUTH_CLIENT_SECRET,
+} from "../utils/ApiUtils";
+import axios, { AxiosResponse } from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { User } from "../models/User";
 import { Base } from "./Base";
 
-interface Prop {
-  token: string;
+interface LoginResponse {
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  refresh_expires_in: number;
+  token_type: string;
+  status: number;
+}
+
+interface LoginError {
+  error: string;
+  error_description: string;
 }
 
 export const Login = () => {
-  const [user, setUser] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string>("");
-  const [loginSuccess, setLoginSuccess] = useState(true);
+  const [loginError, setLoginError] = useState<LoginError>();
   const signIn = useSignIn();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post<Prop>(
-        `${AUTH_API_URL}/auth/login`,
-        JSON.stringify({ username: user, password }),
+      const response: AxiosResponse = await axios.post(
+        VITE_AUTH_LOGIN_URL,
+        `username=${username}&password=${password}&grant_type=${VITE_AUTH_GRANT_TYPE}&client_id=${VITE_AUTH_CLIENT_ID}&client_secret=${VITE_AUTH_CLIENT_SECRET}`,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
         }
       );
 
-      const { token } = response.data;
+      const loginResponse: LoginResponse = response.data;
 
       const success = signIn<User>({
         auth: {
-          token: token,
-          type: "Bearer",
+          token: loginResponse.access_token,
+          type: loginResponse.token_type,
         },
         userState: {
-          user: user,
+          username,
         },
-        expiresIn: 2, //minutes,
+        expiresIn: loginResponse.expires_in / 60, // seconds/60 because signIn takes in minutes
       });
 
-      setLoginSuccess(success);
-    } catch (err) {
-      if (err && err instanceof AxiosError) {
-        setError(err.response?.data.message);
-      } else if (err && err instanceof Error) {
-        setError(err.message);
+      if (success) {
+        navigate("/");
       }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setLoginError(error.response?.data);
 
-      console.error("Error: ", err);
-    }
-
-    if (loginSuccess) {
-      navigate("/");
+        console.error("Axios error:", error.message);
+      } else {
+        console.error("General error:", error.message);
+      }
     }
   };
 
@@ -91,8 +103,8 @@ export const Login = () => {
               label="Username"
               name="username"
               autoFocus
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
 
             <TextField
@@ -109,7 +121,11 @@ export const Login = () => {
               }}
             />
 
-            {loginSuccess ? "" : "Invalid username or password"}
+            {loginError && (
+              <Typography sx={{ color: "#ff0000" }}>
+                {loginError?.error_description}
+              </Typography>
+            )}
 
             <Button
               fullWidth
