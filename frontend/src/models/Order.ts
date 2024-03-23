@@ -1,7 +1,7 @@
 export interface Order {
-  id: number;
+  id?: number;
   title: string;
-  description: boolean;
+  description: string;
   cost: number;
   orderStatus?: string;
 }
