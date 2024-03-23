@@ -6,6 +6,7 @@ import {
   Placemark,
 } from "@pbe/react-yandex-maps";
 import { useCoordinates } from "../hooks/useCoordinates";
+import { VITE_YANDEX_API_KEY } from "../utils/ApiUtils";
 
 export const MapView = () => {
   const coordinates = useCoordinates();
@@ -14,7 +15,7 @@ export const MapView = () => {
     <YMaps
       enterprise={false}
       query={{
-        apikey: "api key needed",
+        apikey: `${VITE_YANDEX_API_KEY}`,
       }}
     >
       {coordinates && (
