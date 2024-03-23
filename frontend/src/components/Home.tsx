@@ -18,9 +18,6 @@ export const Home = () => {
   useEffect(() => {
     try {
       const fetchUser = async () => {
-        // const { data } = await axios.get<Order[]>(
-        //   `${VITE_JSON_SERVER_URL}/orders`
-        // );
         const { data } = await axios.get<Order[]>(`${VITE_API_URL}/orders`, {
           headers: {
             Authorization: authHeader,
@@ -52,22 +49,8 @@ export const Home = () => {
           <Grid item xs={12} md={3}>
             <Stack spacing={2}>
               {orders &&
-                orders.map((item, key) => (
-                  <Grid item key={key}>
-                    <Link
-                      to={{ pathname: "/task-detail" }}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Card key={key}>
-                        <CardContent>
-                          <TruncatedText text={item.title} />
-                          <TruncatedText
-                            text={`Description: ${item.description}`}
-                          />
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  </Grid>
+                orders.map((order, idx) => (
+                  <TaskCard order={order} idx={idx} key={idx} />
                 ))}
               {error && <div>{error}</div>}
             </Stack>
@@ -85,5 +68,28 @@ export const Home = () => {
         </Grid>
       )}
     </Base>
+  );
+};
+
+interface TaskCardProp {
+  order: Order;
+  idx: number;
+}
+
+const TaskCard = ({ order, idx }: TaskCardProp) => {
+  return (
+    <Grid item key={idx}>
+      <Link
+        to={{ pathname: `/task-detail/${order.id}` }}
+        style={{ textDecoration: "none" }}
+      >
+        <Card key={idx}>
+          <CardContent>
+            <TruncatedText text={order.title} />
+            <TruncatedText text={`Description: ${order.description}`} />
+          </CardContent>
+        </Card>
+      </Link>
+    </Grid>
   );
 };
