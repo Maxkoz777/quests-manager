@@ -1,11 +1,12 @@
 import { Box, Button, Grid, Paper, TextField } from "@mui/material";
 import { Base } from "./Base";
 import axios from "axios";
-import { VITE_JSON_SERVER_URL } from "../utils/ApiUtils";
+import { VITE_API_URL } from "../utils/ApiUtils";
 import { Order } from "../models/Order";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { MapView } from "./MapView";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 export const NewTask = () => {
   const {
@@ -15,17 +16,26 @@ export const NewTask = () => {
     reset,
   } = useForm<Order>();
 
-  const onSubmit: SubmitHandler<Order> = async (data) => {
+  const authHeader = useAuthHeader();
+
+  const onSubmit: SubmitHandler<Order> = async ({
+    title,
+    description,
+    cost,
+  }) => {
     const response = await toast.promise(
       axios.post<Order>(
-        `${VITE_JSON_SERVER_URL}/orders`,
+        `${VITE_API_URL}/orders`,
         JSON.stringify({
-          title: data.title,
-          description: data.description,
-          cost: data.cost,
+          title,
+          description,
+          cost,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: authHeader,
+          },
         }
       ),
       {
