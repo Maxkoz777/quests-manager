@@ -39,3 +39,11 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+admin:
+  keycloak:
+    serverUrl: http://localhost:8080
+    realm:  prototype
+    clientId: admin-cli
+    grantType: password
+    clientSecret: KxiXXKxGrnBRkw2D5QdDyR44kr9SsCvq
