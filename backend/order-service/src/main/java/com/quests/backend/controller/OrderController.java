@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -37,15 +36,11 @@ public class OrderController {
         summary = "Get all orders",
         description = "Get list of all orders from storage"
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200",
-            content = { @Content(schema = @Schema(implementation = Order.class)) }
-        ),
-        @ApiResponse(
-            responseCode = "401"
-        )
-    })
+    @ApiResponse(
+        responseCode = "200",
+        content = { @Content(schema = @Schema(implementation = Order.class)) }
+    )
+    @ApiResponse(responseCode = "401")
     @GetMapping
     public ResponseEntity<List<Order>> getAllOrders() {
         var orders = orderService.getAllOrders();
@@ -56,15 +51,11 @@ public class OrderController {
         summary = "Create order",
         description = "Create an order for provided properties"
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "201",
-            content = { @Content(schema = @Schema(implementation = Order.class)) }
-        ),
-        @ApiResponse(
-            responseCode = "401"
-        )
-    })
+    @ApiResponse(
+        responseCode = "201",
+        content = { @Content(schema = @Schema(implementation = Order.class)) }
+    )
+    @ApiResponse(responseCode = "401")
     @PostMapping
     public ResponseEntity<Long> createOrder(@RequestBody OrderCreationRequest orderCreationRequest) {
         orderService.createOrder(orderCreationRequest);
@@ -75,18 +66,13 @@ public class OrderController {
         summary = "Get order by id",
         description = "Create an order for provided properties"
     )
-    @ApiResponses({
-        @ApiResponse(
+
+    @ApiResponse(
             responseCode = "200",
             content = { @Content(schema = @Schema(implementation = Order.class)) }
-        ),
-        @ApiResponse(
-            responseCode = "400"
-        ),
-        @ApiResponse(
-            responseCode = "401"
-        )
-    })
+    )
+    @ApiResponse(responseCode = "400")
+    @ApiResponse(responseCode = "401")
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         var optionalOrder = orderService.getOrderById(id);
@@ -103,14 +89,8 @@ public class OrderController {
         summary = "Delete order by id",
         description = "Delete an order with given id"
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "204"
-        ),
-        @ApiResponse(
-            responseCode = "401"
-        )
-    })
+    @ApiResponse(responseCode = "204")
+    @ApiResponse(responseCode = "401")
     @DeleteMapping("/{id}")
     public ResponseEntity<Order> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrderById(id);
@@ -121,14 +101,8 @@ public class OrderController {
         summary = "Execute order",
         description = "Take an order with provided id for execution"
     )
-    @ApiResponses({
-        @ApiResponse(
-            responseCode = "200"
-        ),
-        @ApiResponse(
-            responseCode = "401"
-        )
-    })
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401")
     @PostMapping("/execute/{orderId}")
     public ResponseEntity<String> initTaskExecution(@PathVariable("orderId") long orderId) {
         log.info("Initiated task execution with orderId={}", orderId);
