@@ -39,7 +39,7 @@ export const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState<LoginError>();
-  const signIn = useSignIn();
+  const signIn = useSignIn<User>();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -54,7 +54,7 @@ export const Login = () => {
 
       const loginResponse: LoginResponse = response.data;
 
-      const success = signIn<User>({
+      const success = signIn({
         auth: {
           token: loginResponse.access_token,
           type: loginResponse.token_type,
@@ -62,7 +62,6 @@ export const Login = () => {
         userState: {
           username,
         },
-        expiresIn: loginResponse.expires_in / 60, // seconds/60 because signIn takes in minutes
       });
 
       if (success) {
