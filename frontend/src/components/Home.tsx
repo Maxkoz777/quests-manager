@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Base } from "./Base";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import axios, { AxiosError } from "axios";
-import { VITE_JSON_SERVER_URL } from "../utils/ApiUtils";
 import { Card, CardContent, Grid, Paper, Stack } from "@mui/material";
 import { Order } from "../models/Order";
-import { Link } from "react-router-dom";
-import { TruncatedText } from "./TruncatedText";
+import { VITE_API_URL } from "../utils/ApiUtils";
 import { MapView } from "./MapView";
+import { TruncatedText } from "./TruncatedText";
 
 export const Home = () => {
   const [error, setError] = useState("");
@@ -18,14 +18,14 @@ export const Home = () => {
   useEffect(() => {
     try {
       const fetchUser = async () => {
-        const { data } = await axios.get<Order[]>(
-          `${VITE_JSON_SERVER_URL}/orders`
-        );
-        // const { data } = await axios.get<Order[]>(`${API_URL}/orders`, {
-        //   headers: {
-        //     Authorization: "Bearer please use auth header!! thanks )))",
-        //   },
-        // });
+        // const { data } = await axios.get<Order[]>(
+        //   `${VITE_JSON_SERVER_URL}/orders`
+        // );
+        const { data } = await axios.get<Order[]>(`${VITE_API_URL}/orders`, {
+          headers: {
+            Authorization: authHeader,
+          },
+        });
 
         data && setOrders(data);
         setLoading(false);
