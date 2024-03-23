@@ -18,6 +18,7 @@ const store = createStore<User>({
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <AuthProvider store={store}>

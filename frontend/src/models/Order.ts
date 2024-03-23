@@ -3,4 +3,5 @@ export interface Order {
   title: string;
   description: boolean;
   cost: number;
+  orderStatus?: string;
 }
