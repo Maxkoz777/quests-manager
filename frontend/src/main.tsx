@@ -7,6 +7,8 @@ import AuthProvider from "react-auth-kit";
 import { User } from "./models/User.ts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { YMaps } from "@pbe/react-yandex-maps";
+import { VITE_YANDEX_API_KEY } from "./utils/ApiUtils.ts";
 
 const store = createStore<User>({
   authName: "_auth",
@@ -23,7 +25,13 @@ root.render(
   <React.StrictMode>
     <AuthProvider store={store}>
       <BrowserRouter>
-        <App />
+        <YMaps
+          query={{
+            apikey: `${VITE_YANDEX_API_KEY}`,
+          }}
+        >
+          <App />
+        </YMaps>
       </BrowserRouter>
     </AuthProvider>
     <ToastContainer
