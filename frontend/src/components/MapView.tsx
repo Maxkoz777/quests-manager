@@ -4,6 +4,7 @@ import {
   ZoomControl,
   RulerControl,
   Placemark,
+  GeolocationControl,
 } from "@pbe/react-yandex-maps";
 import { useCoordinates } from "../hooks/useCoordinates";
 import { VITE_YANDEX_API_KEY } from "../utils/ApiUtils";
@@ -27,11 +28,16 @@ export const MapView = () => {
             zoom: 15,
           }}
         >
-          <ZoomControl options={{ float: "right" }} />
-          <RulerControl options={{ float: "right" }} />
+          <ZoomControl
+            options={{ position: { right: "20px", bottom: "80px" } }}
+          />
+          <RulerControl
+            options={{ position: { right: "20px", bottom: "30px" } }}
+          />
           <Placemark
             geometry={[coordinates?.latitude, coordinates.longitude]}
           />
+          <GeolocationControl options={{ float: "left" }} />
         </Map>
       )}
     </YMaps>
