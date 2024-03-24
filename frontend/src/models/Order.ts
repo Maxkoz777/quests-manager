@@ -1,5 +1,5 @@
 export interface Order {
-  id?: number;
+  id: 0;
   title: string;
   description: string;
   cost: number;
