@@ -24,4 +24,6 @@ public class Order {
     private double cost;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    private String creatorId;
+    private String executorId;
 }
