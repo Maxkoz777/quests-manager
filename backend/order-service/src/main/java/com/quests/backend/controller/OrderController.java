@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.security.Principal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +39,13 @@ public class OrderController {
     )
     @ApiResponse(
         responseCode = "200",
-        content = { @Content(schema = @Schema(implementation = Order.class)) }
+        content = {@Content(schema = @Schema(implementation = Order.class))}
     )
     @ApiResponse(responseCode = "401")
     @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders() {
-        var orders = orderService.getAllOrders();
+    public ResponseEntity<List<Order>> getAllOrders(Principal principal) {
+        var userId = principal.getName();
+        var orders = orderService.getAllAvailableOrders(userId);
         return ResponseEntity.ok(orders);
     }
 
@@ -53,12 +55,14 @@ public class OrderController {
     )
     @ApiResponse(
         responseCode = "201",
-        content = { @Content(schema = @Schema(implementation = Order.class)) }
+        content = {@Content(schema = @Schema(implementation = Order.class))}
     )
     @ApiResponse(responseCode = "401")
     @PostMapping
-    public ResponseEntity<Long> createOrder(@RequestBody OrderCreationRequest orderCreationRequest) {
-        orderService.createOrder(orderCreationRequest);
+    public ResponseEntity<Long> createOrder(Principal principal,
+                                            @RequestBody OrderCreationRequest orderCreationRequest) {
+        var userId = principal.getName();
+        orderService.createOrder(userId, orderCreationRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -68,8 +72,8 @@ public class OrderController {
     )
 
     @ApiResponse(
-            responseCode = "200",
-            content = { @Content(schema = @Schema(implementation = Order.class)) }
+        responseCode = "200",
+        content = {@Content(schema = @Schema(implementation = Order.class))}
     )
     @ApiResponse(responseCode = "400")
     @ApiResponse(responseCode = "401")
@@ -104,9 +108,10 @@ public class OrderController {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "401")
     @PostMapping("/execute/{orderId}")
-    public ResponseEntity<String> initTaskExecution(@PathVariable("orderId") long orderId) {
-        log.info("Initiated task execution with orderId={}", orderId);
-        orderService.executeOrder(orderId);
+    public ResponseEntity<String> initTaskExecution(@PathVariable("orderId") long orderId, Principal principal) {
+        var userId = principal.getName();
+        log.info("Initiated task execution with orderId={} by user={}", orderId, userId);
+        orderService.executeOrder(orderId, userId);
         return ResponseEntity.ok("Task execution request is sent for processing");
     }
 }
