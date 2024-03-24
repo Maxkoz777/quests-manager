@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  SxProps,
-  Theme,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Paper, SxProps, Theme, Typography } from "@mui/material";
 import { Base } from "./Base";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -15,11 +7,10 @@ import { Order } from "../models/Order";
 import { VITE_API_URL } from "../utils/ApiUtils";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { MapView } from "./MapView";
-import { EditTask } from "./EditTask";
+import { PickTask } from "./PickTask";
 
 export const TaskDetail = () => {
   const [order, setOrder] = useState<Order>();
-  const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const params = useParams();
   const authHeader = useAuthHeader();
 
@@ -75,14 +66,7 @@ export const TaskDetail = () => {
               width: "100%",
             }}
           ></Box>
-          <Button
-            onClick={() => setShowEditForm(true)}
-            variant="contained"
-            sx={{ marginTop: "1.5rem" }}
-          >
-            Edit
-          </Button>
-          {showEditForm && <EditTask setShowEditForm={setShowEditForm} />}
+          <PickTask taskId={id} />
         </Grid>
         <Grid item xs={0} sx={{ display: { xs: "none", md: "block" } }} md={9}>
           <Paper elevation={3} sx={{ height: "100%" }}>
