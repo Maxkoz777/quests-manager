@@ -37,17 +37,18 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
 
-    public List<Order> getAllOrders() {
-        var orders = orderRepository.findAll();
+    public List<Order> getAllAvailableOrders(String userId) {
+        var orders = orderRepository.findOrderByCreatorIdIsNot(userId);
         log.info("Retrieved {} order(s) from storage", orders.size());
         return orders;
     }
 
-    public void createOrder(OrderCreationRequest orderCreationRequest) {
+    public void createOrder(String userId, OrderCreationRequest orderCreationRequest) {
         log.info("Creating order \"{}\"", orderCreationRequest.title());
         var traceId = UUID.randomUUID().toString();
         var order = orderMapper.getOrderFromRequest(orderCreationRequest);
         order.setOrderStatus(OrderStatus.INITIATED);
+        order.setCreatorId(userId);
         orderRepository.save(order);
         log.info("Order with id={} created", order.getId());
         log.info("Sending order for the fraud checking service");
@@ -64,10 +65,12 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 
-    public void executeOrder(long orderId) {
+    public void executeOrder(long orderId, String userId) {
         log.info("Payment process initiated for order {}", orderId);
         var traceId = UUID.randomUUID().toString();
-        var paymentMessage = new PaymentCreationMessage("jwt", traceId, orderId, 12.34);
+        var order = orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
+        var creatorId = order.getCreatorId();
+        var paymentMessage = new PaymentCreationMessage(traceId, orderId, 12.34, creatorId, userId);
         kafkaTemplate.send("payment.initiate", paymentMessage);
         log.info("Payment process initiating, returning result to client");
     }
@@ -82,6 +85,7 @@ public class OrderService {
         if (orderOptional.isPresent()) {
             var order = orderOptional.get();
             order.setOrderStatus(OrderStatus.IN_PROGRESS);
+            order.setExecutorId(message.executorId());
             log.info("Updating the status for order {}", message.orderId());
             orderRepository.saveAndFlush(order);
         }
