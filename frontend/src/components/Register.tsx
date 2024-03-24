@@ -77,7 +77,6 @@ export const Register = () => {
       <Container maxWidth="xs">
         <Box
           sx={{
-            mt: 20,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
