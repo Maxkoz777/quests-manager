@@ -6,5 +6,7 @@ public record PaymentReservationMessage(
     String traceId,
     long orderId,
     PaymentStatus status,
-    String message
+    String message,
+    String creatorId,
+    String executorId
 ) {}
