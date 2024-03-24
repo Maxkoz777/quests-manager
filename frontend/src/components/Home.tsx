@@ -47,7 +47,15 @@ export const Home = () => {
       ) : (
         <Grid container spacing={2} sx={{ height: "calc(100vh - 6rem)" }}>
           <Grid item xs={12} md={3}>
-            <Stack spacing={2}>
+            <Stack
+              sx={{
+                backgroundColor: "#f1f1f1",
+                height: "calc(100vh - 8rem)",
+                overflow: "scroll",
+                padding: "10px",
+              }}
+              spacing={2}
+            >
               {orders &&
                 orders.map((order, idx) => (
                   <TaskCard order={order} idx={idx} key={idx} />
@@ -87,6 +95,7 @@ const TaskCard = ({ order, idx }: TaskCardProp) => {
           <CardContent>
             <TruncatedText text={order.title} />
             <TruncatedText text={`Description: ${order.description}`} />
+            <TruncatedText text={`Cost: ${order.cost}`} />
           </CardContent>
         </Card>
       </Link>
