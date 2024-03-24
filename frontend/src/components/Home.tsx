@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { Base } from "./Base";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import axios, { AxiosError } from "axios";
-import { Card, CardContent, Grid, Paper, Stack } from "@mui/material";
+import { Box, Card, CardContent, Grid, Paper, Stack } from "@mui/material";
 import { Order } from "../models/Order";
 import { VITE_API_URL } from "../utils/ApiUtils";
 import { MapView } from "./MapView";
 import { TruncatedText } from "./TruncatedText";
+import { PickTask } from "./PickTask";
 
 export const Home = () => {
   const [error, setError] = useState("");
@@ -87,18 +88,25 @@ interface TaskCardProp {
 const TaskCard = ({ order, idx }: TaskCardProp) => {
   return (
     <Grid item key={idx}>
-      <Link
-        to={{ pathname: `/task-detail/${order.id}` }}
-        style={{ textDecoration: "none" }}
-      >
-        <Card key={idx}>
-          <CardContent>
-            <TruncatedText text={order.title} />
-            <TruncatedText text={`Description: ${order.description}`} />
-            <TruncatedText text={`Cost: ${order.cost}`} />
-          </CardContent>
-        </Card>
-      </Link>
+      <Card key={idx}>
+        <CardContent
+          sx={{ display: "flex", flexDirection: "column", padding: "10px" }}
+        >
+          <Link
+            to={{ pathname: `/task-detail/${order.id}` }}
+            style={{ textDecoration: "none" }}
+          >
+            <Paper elevation={2} sx={{ padding: "10px" }}>
+              <TruncatedText text={order.title} />
+              <TruncatedText text={`Description: ${order.description}`} />
+              <TruncatedText text={`Cost: ${order.cost}`} />
+            </Paper>
+          </Link>
+          <Box sx={{ alignSelf: "flex-end" }}>
+            <PickTask taskId={order.id} />
+          </Box>
+        </CardContent>
+      </Card>
     </Grid>
   );
 };
