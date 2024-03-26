@@ -19,6 +19,7 @@ Our primary goal is to create a mutually beneficial ecosystem where individuals 
 3. Pay money
 
 ## :hotsprings: Frameworks
+
 - **Back:** java, spring boot, hibernate, PostgreSQL, Swagger
 - **Front:** TypeScript, React, MUI
 - **Deploy:** Yandex Cloud, git
@@ -33,7 +34,38 @@ ToDo
 
 ## :ferry: Docker compose
 
-ToDo
+### Front (subject to change)
+
+Navigate to `/frontend` directory
+
+```bash
+cd /front
+```
+
+#### Add environment variables in .env file in `/front/` directory
+
+Replace `<<placeholder>>` with actual
+
+```plaintext
+VITE_API_URL=http://localhost:8081/api/v1 #<<this is the order service because we haven't setup api gateway>>
+VITE_AUTH_LOGIN_URL=http://localhost:8080/realms/prototype/protocol/openid-connect/token #<<this is keycloak url>>
+VITE_AUTH_GRANT_TYPE=<<place your grant type from keycload (currently "password")>>
+VITE_AUTH_CLIENT_ID=<<place your client id from keycloak>>
+VITE_AUTH_CLIENT_SECRET=<<place your client secret form keycloak>>
+VITE_AUTH_REGISTER_URL=http://localhost:8082/keycloak/register #<<registration end point from user service>>
+VITE_APP_TITLE=Quests Manager
+VITE_YANDEX_API_KEY=<<your yandex api key here>>
+```
+
+#### Build and Run
+
+```bash
+docker compose up -d
+```
+
+To rebuild the image, add `--build`
+
+#### Open the [http://localhost:3000](http://localhost:3000) to access the website
 
 ## :bookmark_tabs: Requirements
 
@@ -55,7 +87,6 @@ ToDo
 
 ![quests-manager - Functionality decomposition](https://github.com/Maxkoz777/quests-manager/assets/54961113/8a4495b2-a2ab-4878-a019-9eb3241234a1)
 
-
 ## :art: Design
 
 In Progress
@@ -69,6 +100,7 @@ ToDo
 ToDo: in progress
 
 ## :link: Links
+
 - [Swagger]()
 - [Backend]()
 - [Figma](https://www.figma.com/file/iJMwEqlGgj2MKRnQxkD9uK/Quests-Web-App-Design-Board?type=design&node-id=0%3A1&mode=design&t=LGLLjfQcIsUiKLlX-1)
@@ -78,6 +110,7 @@ ToDo: in progress
 ![Demo]()
 
 ## :pencil2: Contributing
+
 If you have a suggestion that would make this better, please fork the repo and create a pull request:
 
 1. Fork the Project
@@ -87,9 +120,11 @@ If you have a suggestion that would make this better, please fork the repo and c
 5. Open a Pull Request
 
 ## :lock: License
+
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ## :v: Credits
+
 This project was done by :
 
 [Kostarev Grigorii](https://github.com/none-word), [Maxim Kozhinov](https://github.com/Maxkoz777), [Kim Fom](https://github.com/kimfom01)
