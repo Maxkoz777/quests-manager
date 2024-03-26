@@ -72,7 +72,7 @@ export const Login = () => {
         setLoginError(error.response?.data);
 
         console.error("Axios error:", error.message);
-      } else {
+      } else if (error instanceof Error) {
         console.error("General error:", error.message);
       }
     }
