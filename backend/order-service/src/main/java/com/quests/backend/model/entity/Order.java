@@ -8,7 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Data
 @Entity
@@ -26,4 +28,8 @@ public class Order {
     private OrderStatus orderStatus;
     private String creatorId;
     private String executorId;
+    @CreationTimestamp
+    private Instant createdOn;
+    private Instant executionStartTime = null;
+    private Instant executionFinishTime = null;
 }

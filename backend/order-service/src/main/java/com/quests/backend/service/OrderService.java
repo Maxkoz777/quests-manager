@@ -10,6 +10,7 @@ import com.quests.backend.model.OrderMapper;
 import com.quests.backend.model.dto.OrderCreationRequest;
 import com.quests.backend.model.entity.Order;
 import com.quests.backend.repository.OrderRepository;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -86,6 +87,7 @@ public class OrderService {
             var order = orderOptional.get();
             order.setOrderStatus(OrderStatus.IN_PROGRESS);
             order.setExecutorId(message.executorId());
+            order.setExecutionStartTime(Instant.now());
             log.info("Updating the status for order {}", message.orderId());
             orderRepository.saveAndFlush(order);
         }
