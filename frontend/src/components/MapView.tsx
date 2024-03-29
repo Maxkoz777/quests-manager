@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useUserCoordinates } from "../hooks/useUserCoordinates";
 import {
   Map,
   ZoomControl,
@@ -5,27 +7,54 @@ import {
   Placemark,
   GeolocationControl,
 } from "@pbe/react-yandex-maps";
-import { useCoordinates } from "../hooks/useCoordinates";
+import { MapEvent } from "yandex-maps";
+import { Coordinate } from "../models/Coordinate";
 
-export const MapView = () => {
-  const coordinates = useCoordinates();
+interface Prop {
+  create: boolean;
+}
+
+export const MapView = ({ create }: Prop) => {
+  const userCoordinates = useUserCoordinates();
+  const [coordinates, setCoordinates] = useState<Coordinate>();
+
+  const handleClick = (event: MapEvent) => {
+    const [latitude, longitude] = event.get("coords");
+
+    setCoordinates({ latitude, longitude });
+
+    console.log(latitude, ",", longitude);
+  };
 
   return (
     <>
-      {coordinates && (
+      {userCoordinates && (
         <Map
           width={"100%"}
           height={"100%"}
           defaultState={{
-            center: [coordinates?.latitude, coordinates?.longitude],
+            center: [userCoordinates?.latitude, userCoordinates?.longitude],
             zoom: 15,
           }}
+          onClick={handleClick}
         >
           <ZoomControl
             options={{ position: { right: "20px", bottom: "80px" } }}
           />
           <RulerControl
             options={{ position: { right: "20px", bottom: "30px" } }}
+          />
+          <Placemark
+            geometry={[55.751643, 48.743429]}
+            properties={{
+              iconCaption: "Clear snow 0:30:45",
+              hintContent:
+                "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+            }}
+            options={{
+              hideIconOnBalloonOpen: false,
+              balloonCloseButton: false,
+            }}
           />
           <Placemark
             geometry={[55.753757, 48.742903]}
@@ -42,18 +71,11 @@ export const MapView = () => {
               hintContent: "I need you to help me take out the garbage",
             }}
           />
-          <Placemark
-            geometry={[55.747736, 48.745855]}
-            properties={{
-              iconCaption: "Clear snow 0:30:45",
-              hintContent:
-                "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            }}
-            options={{
-              hideIconOnBalloonOpen: false,
-              balloonCloseButton: false,
-            }}
-          />
+          {create && coordinates && (
+            <Placemark
+              geometry={[coordinates?.latitude, coordinates?.longitude]}
+            />
+          )}
           <GeolocationControl options={{ float: "left" }} />
         </Map>
       )}

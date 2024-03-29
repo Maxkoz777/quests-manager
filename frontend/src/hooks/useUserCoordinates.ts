@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
+import { Coordinate } from "../models/Coordinate";
 
-interface Coordinate {
-  latitude: number;
-  longitude: number;
-}
-
-export const useCoordinates = () => {
+export const useUserCoordinates = () => {
   const [coordinates, setCoordinates] = useState<Coordinate>();
 
   useEffect(() => {

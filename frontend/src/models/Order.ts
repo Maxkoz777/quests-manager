@@ -4,4 +4,9 @@ export interface Order {
   description: string;
   cost: number;
   orderStatus?: string;
+  creatorId: string;
+  executorId: string;
+  createdOn: Date;
+  executionStartTime?: Date;
+  executionFinishTime?: Date;
 }
