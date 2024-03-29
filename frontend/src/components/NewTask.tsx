@@ -100,7 +100,7 @@ export const NewTask = () => {
         </Grid>
         <Grid item xs={0} sx={{ display: { xs: "none", md: "block" } }} md={9}>
           <Paper elevation={3} sx={{ height: "100%" }}>
-            <MapView />
+            <MapView create={true} />
           </Paper>
         </Grid>
       </Grid>
