@@ -71,7 +71,7 @@ export const Home = () => {
             md={9}
           >
             <Paper elevation={3} sx={{ height: "100%" }}>
-              <MapView />
+              <MapView create={false} />
             </Paper>
           </Grid>
         </Grid>
