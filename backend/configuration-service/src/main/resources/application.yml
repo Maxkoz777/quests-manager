@@ -2,7 +2,7 @@ spring:
   application:
     name: configuration
   kafka:
-    bootstrap-servers: localhost:9093
+    bootstrap-servers: ${KAFKA_HOST:localhost}:9093
 
 server:
   port: 8084
@@ -10,4 +10,4 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka
