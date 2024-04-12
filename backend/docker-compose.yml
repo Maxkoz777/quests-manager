@@ -57,6 +57,115 @@ services:
     depends_on:
       - zookeeper
 
+  eureka-server:
+    container_name: eureka-server
+    image: maxkoz777/qm-eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - db
+      - kafka
+    networks:
+      - postgres
+
+  configuration-service:
+    container_name: configuration-service
+    image: maxkoz777/qm-configuration-service
+    ports:
+      - "8084:8084"
+    environment:
+      EUREKA_HOST: eureka-server
+      KAFKA_HOST: kafka
+    depends_on:
+      - eureka-server
+    networks:
+      - postgres
+
+  gateway:
+    container_name: gateway
+    image: maxkoz777/qm-gateway
+    ports:
+      - "8085:8085"
+    environment:
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - configuration-service
+    networks:
+      - postgres
+
+  user-service:
+    container_name: user-service
+    image: maxkoz777/qm-user-service
+    ports:
+      - "8082:8082"
+    environment:
+      EUREKA_HOST: eureka-server
+      KAFKA_HOST: kafka
+      DB_HOST: db
+      KEYCLOAK_HOST: keycloak
+    depends_on:
+      - configuration-service
+    networks:
+      - postgres
+
+  order-service:
+    container_name: order-service
+    image: maxkoz777/qm-order-service
+    ports:
+      - "8081:8081"
+    environment:
+      EUREKA_HOST: eureka-server
+      KAFKA_HOST: kafka
+      DB_HOST: db
+      KEYCLOAK_HOST: keycloak
+    depends_on:
+      - configuration-service
+    networks:
+      - postgres
+
+  payment-service:
+    container_name: payment-service
+    image: maxkoz777/qm-payment-service
+    ports:
+      - "8083:8083"
+    environment:
+      EUREKA_HOST: eureka-server
+      KAFKA_HOST: kafka
+      DB_HOST: db
+      KEYCLOAK_HOST: keycloak
+    depends_on:
+      - configuration-service
+    networks:
+      - postgres
+
+  fraud-service:
+    container_name: fraud-service
+    image: maxkoz777/qm-fraud-service
+    ports:
+      - "8087:8087"
+    environment:
+      EUREKA_HOST: eureka-server
+      KAFKA_HOST: kafka
+      DB_HOST: db
+    depends_on:
+      - configuration-service
+    networks:
+      - postgres
+
+  notification-service:
+    container_name: notification-service
+    image: maxkoz777/qm-notification-service
+    ports:
+      - "8086:8086"
+    environment:
+      EUREKA_HOST: eureka-server
+      KAFKA_HOST: kafka
+      DB_HOST: db
+    depends_on:
+      - configuration-service
+    networks:
+      - postgres
+
 networks:
   postgres:
     driver: bridge

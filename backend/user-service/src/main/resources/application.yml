@@ -4,7 +4,7 @@ spring:
   datasource:
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:password}
-    url: jdbc:postgresql://${IP:localhost}:${DB_PORT:5432}/${DB_NAME:quests}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:quests}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -21,7 +21,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/prototype
+          issuer-uri: http://${KEYCLOAK_HOST:localhost}:8080/realms/prototype
 
 springdoc:
   swagger-ui:
@@ -38,11 +38,11 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka
 
 admin:
   keycloak:
-    serverUrl: http://localhost:8080
+    serverUrl: http://${KEYCLOAK_HOST:localhost}:8080
     realm:  prototype
     clientId: admin-cli
     grantType: password
