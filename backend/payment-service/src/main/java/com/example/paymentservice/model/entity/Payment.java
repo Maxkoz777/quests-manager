@@ -16,6 +16,6 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private double amountChange;
-    private Long keycloakId;
+    private double balance;
+    private String userId;
 }
