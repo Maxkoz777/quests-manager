@@ -33,4 +33,21 @@ public class PaymentService {
         sendingResult.whenComplete((result, error) -> log.info("Message successfully sent"));
     }
 
+    @KafkaListener(topics = "payment.initiate")
+    public void processPayment(PaymentMessage message) {
+        log.info("Received message from order service: {}", message);
+        log.info("Sending predefined message to order service");
+        var paymentReservationMessage = new PaymentReservationMessage(
+            "traceId",
+            message.orderId(),
+            PaymentStatus.SUCCESSFUL,
+            "Order payed successfully",
+            message.creatorId(),
+            message.executorId()
+        );
+        var sendingResult = kafkaTemplate.send(
+            "order.finalization", paymentReservationMessage);
+        sendingResult.whenComplete((result, error) -> log.info("Message successfully sent"));
+    }
+
 }
