@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/orders")
 @SecurityRequirement(name = "Keycloak")
 @Tag(name = "Order Controller", description = "Order controller APIs")
-public class OrderController {
+public class OrderController {  // todo: divide to orderController & executionController
 
     private final OrderService orderService;
 
@@ -127,5 +127,19 @@ public class OrderController {
         log.info("Initiated task finalization process with orderId={} by user={}", orderId, userId);
         orderService.finishOrderExecution(orderId, userId);
         return ResponseEntity.ok("Order is marked finished by the doer");
+    }
+
+    @Operation(
+        summary = "Finish order",
+        description = "Finish order execution with provided id"
+    )
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401")
+    @PostMapping("/validate/{orderId}")
+    public ResponseEntity<String> validateOrderExecution(@PathVariable("orderId") long orderId, Principal principal) {
+        var userId = principal.getName();
+        log.info("Validating order execution process with orderId={} by user={}", orderId, userId);
+        orderService.validateOrderExecution(orderId, userId);
+        return ResponseEntity.ok("Order was closed by the author");
     }
 }

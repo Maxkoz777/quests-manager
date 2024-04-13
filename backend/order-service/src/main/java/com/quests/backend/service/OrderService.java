@@ -3,9 +3,10 @@ package com.quests.backend.service;
 import com.example.common.events.FraudCheckMessage;
 import com.example.common.events.FraudResultMessage;
 import com.example.common.events.NotificationMessage;
-import com.example.common.events.PaymentCreationMessage;
+import com.example.common.events.PaymentMessage;
 import com.example.common.events.PaymentReservationMessage;
 import com.example.common.events.enums.OrderStatus;
+import com.example.common.events.enums.PaymentStatus;
 import com.quests.backend.exception.NoSuchOrderException;
 import com.quests.backend.model.OrderMapper;
 import com.quests.backend.model.dto.OrderCreationRequest;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     @Autowired
-    private KafkaTemplate<String, PaymentCreationMessage> kafkaTemplate;
+    private KafkaTemplate<String, PaymentMessage> paymentKafkaTemplate;
 
     @Autowired
     private KafkaTemplate<String, NotificationMessage> notificationKafkaTemplate;
@@ -72,8 +73,8 @@ public class OrderService {
         var traceId = UUID.randomUUID().toString();
         var order = orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
         var creatorId = order.getCreatorId();
-        var paymentMessage = new PaymentCreationMessage(traceId, orderId, 12.34, creatorId, userId);
-        kafkaTemplate.send("payment.initiate", paymentMessage);
+        var paymentMessage = new PaymentMessage(traceId, orderId, 12.34, creatorId, userId);
+        paymentKafkaTemplate.send("payment.initiate", paymentMessage);
         log.info("Payment process initiating, returning result to client");
     }
 
@@ -124,5 +125,37 @@ public class OrderService {
         notificationKafkaTemplate.send("user.notification.order.update", notification)
             .whenComplete((result, error) -> log.info("Notification successfully sent"));
         orderRepository.saveAndFlush(order);
+    }
+
+    public void validateOrderExecution(long orderId, String userId) {
+        var traceId = UUID.randomUUID().toString();
+        var order = orderRepository.findById(orderId).orElseThrow(NoSuchOrderException::new);
+        if (!order.getCreatorId().equals(userId)) {
+            log.error("Order {} was not created by the current user {}", orderId, userId);
+            throw new RuntimeException("Order was not created by the current user");
+        }
+        log.info("Retrieved order with id={}", order.getId());
+        log.info("Sending message to payment service for money transaction execution");
+        var paymentMessage = new PaymentMessage(traceId, orderId, order.getCost(), order.getCreatorId(), order.getExecutorId());
+        paymentKafkaTemplate.send("payment.execution", paymentMessage)
+            .whenComplete((result, error) -> log.info("Payment successfully sent for execution"));
+    }
+
+    @KafkaListener(topics = "order.finalization")
+    public void finalizeOrderStatus(PaymentReservationMessage message) {
+        log.info("Received payment processing message: {}", message);
+        var order = orderRepository.findById(message.orderId()).orElseThrow(NoSuchOrderException::new);
+        String content;
+        if (message.status() == PaymentStatus.SUCCESSFUL) {
+            order.setOrderStatus(OrderStatus.DONE);
+            content = "Payment transaction processed successfully";
+        } else {
+            content = "Payment unsuccessful";
+        }
+        var notification = new NotificationMessage(message.traceId(), message.orderId(), content);
+        log.info("Sending payment notification to user");
+        orderRepository.saveAndFlush(order);
+        notificationKafkaTemplate.send("user.notification.order.update", notification)
+            .whenComplete((result, error) -> log.info("Notification successfully sent"));
     }
 }

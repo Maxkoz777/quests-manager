@@ -79,5 +79,21 @@ public class KafkaTopicConfig {
             .replicas(1)
             .build();
     }
+
+    @Bean
+    public NewTopic paymentExecution() {
+        return TopicBuilder.name("payment.execution")
+            .partitions(3)
+            .replicas(1)
+            .build();
+    }
+
+    @Bean
+    public NewTopic orderFinalization() {
+        return TopicBuilder.name("order.finalization")
+            .partitions(3)
+            .replicas(1)
+            .build();
+    }
 }
 
