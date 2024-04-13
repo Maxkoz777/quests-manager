@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
-import { VITE_AUTH_REGISTER_URL } from "../utils/ApiUtils";
-import { Base } from "./Base";
+import { VITE_AUTH_REGISTER_URL } from "../../utils/ApiUtils";
+import { Base } from "../utils/Base";
 import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -40,16 +40,18 @@ export const Register = () => {
     email,
     password,
   }) => {
+    const payload: RegisterModel = {
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+    };
+
     const response = await toast.promise(
       axios.post<RegisterModel>(
         VITE_AUTH_REGISTER_URL,
-        JSON.stringify({
-          firstName,
-          lastName,
-          username,
-          email,
-          password,
-        }),
+        JSON.stringify(payload),
         {
           headers: { "Content-Type": "application/json" },
         }

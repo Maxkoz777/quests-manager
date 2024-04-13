@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useUserCoordinates } from "../hooks/useUserCoordinates";
+import { useUserCoordinates } from "../../hooks/useUserCoordinates";
 import {
   Map,
   ZoomControl,
@@ -8,22 +7,28 @@ import {
   GeolocationControl,
 } from "@pbe/react-yandex-maps";
 import { MapEvent } from "yandex-maps";
-import { Coordinate } from "../models/Coordinate";
+import { Coordinate } from "../../models/Coordinate";
+import { Order } from "../../models/Order";
 
 interface Prop {
   create: boolean;
+  coordinates?: Coordinate | undefined;
+  orders?: Order[];
+  setCoordinates?: React.Dispatch<React.SetStateAction<Coordinate | undefined>>;
 }
 
-export const MapView = ({ create }: Prop) => {
+export const MapView = ({
+  create,
+  coordinates,
+  setCoordinates,
+  orders,
+}: Prop) => {
   const userCoordinates = useUserCoordinates();
-  const [coordinates, setCoordinates] = useState<Coordinate>();
 
   const handleClick = (event: MapEvent) => {
     const [latitude, longitude] = event.get("coords");
 
-    setCoordinates({ latitude, longitude });
-
-    console.log(latitude, ",", longitude);
+    setCoordinates && setCoordinates({ latitude, longitude });
   };
 
   return (
@@ -44,7 +49,20 @@ export const MapView = ({ create }: Prop) => {
           <RulerControl
             options={{ position: { right: "20px", bottom: "30px" } }}
           />
-          <Placemark
+          {orders &&
+            orders.map((order, idx) => {
+              return (
+                <Placemark
+                  key={idx}
+                  geometry={[order.latitude, order.longitude]}
+                  properties={{
+                    iconCaption: order.title,
+                    hintContent: order.description,
+                  }}
+                />
+              );
+            })}
+          {/* <Placemark
             geometry={[55.751643, 48.743429]}
             properties={{
               iconCaption: "Clear snow 0:30:45",
@@ -70,7 +88,7 @@ export const MapView = ({ create }: Prop) => {
               iconCaption: "Take out garbage",
               hintContent: "I need you to help me take out the garbage",
             }}
-          />
+          /> */}
           {create && coordinates && (
             <Placemark
               geometry={[coordinates?.latitude, coordinates?.longitude]}

@@ -1,47 +1,56 @@
 import { Box, Button, Grid, Paper, TextField } from "@mui/material";
-import { Base } from "./Base";
+import { Base } from "../utils/Base";
 import axios from "axios";
-import { VITE_API_URL } from "../utils/ApiUtils";
-import { Order } from "../models/Order";
+import { VITE_API_URL } from "../../utils/ApiUtils";
+import { OrderCreate } from "../../models/Order";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
-import { MapView } from "./MapView";
+import { MapView } from "../map/MapView";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import { useState } from "react";
+import { Coordinate } from "../../models/Coordinate";
 
-export const NewTask = () => {
+export const NewOrder = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Order>();
+  } = useForm<OrderCreate>();
+
+  const [coordinates, setCoordinates] = useState<Coordinate>();
 
   const authHeader = useAuthHeader();
 
-  const onSubmit: SubmitHandler<Order> = async ({
+  console.log(coordinates?.latitude, coordinates?.longitude);
+
+  const onSubmit: SubmitHandler<OrderCreate> = async ({
     title,
     description,
     cost,
   }) => {
+    const payload: OrderCreate = {
+      title,
+      description,
+      latitude: coordinates?.latitude,
+      longitude: coordinates?.longitude,
+      cost,
+      executionDuration: 3600, // in seconds
+      executionPeriodStart: new Date(),
+      executionPeriodEnd: new Date(Date.now() + 3600 * 1000),
+    };
+
     const response = await toast.promise(
-      axios.post<Order>(
-        `${VITE_API_URL}/orders`,
-        JSON.stringify({
-          title,
-          description,
-          cost,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      ),
+      axios.post(`${VITE_API_URL}/orders`, JSON.stringify(payload), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: authHeader,
+        },
+      }),
       {
         pending: "Creating...",
         success: "Created successfully",
-        error: "Error creating new task",
+        error: "Error creating new order",
       }
     );
 
@@ -72,7 +81,6 @@ export const NewTask = () => {
                 fullWidth
                 id="description"
                 label="Description"
-                autoFocus
                 {...register("description", { required: true })}
               />
               {errors.description && <span>This field is required</span>}
@@ -82,7 +90,6 @@ export const NewTask = () => {
                 fullWidth
                 id="cost"
                 label="Cost"
-                autoFocus
                 type="number"
                 {...register("cost", { required: true })}
               />
@@ -94,13 +101,17 @@ export const NewTask = () => {
               sx={{ mt: 3, mb: 2 }}
               type="submit"
             >
-              Create Task
+              Create Order
             </Button>
           </form>
         </Grid>
         <Grid item xs={0} sx={{ display: { xs: "none", md: "block" } }} md={9}>
           <Paper elevation={3} sx={{ height: "100%" }}>
-            <MapView create={true} />
+            <MapView
+              create={true}
+              coordinates={coordinates}
+              setCoordinates={setCoordinates}
+            />
           </Paper>
         </Grid>
       </Grid>

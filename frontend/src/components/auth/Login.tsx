@@ -15,11 +15,11 @@ import {
   VITE_AUTH_GRANT_TYPE,
   VITE_AUTH_CLIENT_ID,
   VITE_AUTH_CLIENT_SECRET,
-} from "../utils/ApiUtils";
+} from "../../utils/ApiUtils";
 import axios, { AxiosResponse } from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
-import { User } from "../models/User";
-import { Base } from "./Base";
+import { User } from "../../models/User";
+import { Base } from "../utils/Base";
 
 interface LoginResponse {
   access_token: string;
