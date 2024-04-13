@@ -1,6 +1,7 @@
 package com.quests.backend.model.entity;
 
 import com.example.common.events.enums.OrderStatus;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,6 +29,8 @@ public class Order {
     private OrderStatus orderStatus;
     private String creatorId;
     private String executorId;
+    private Double latitude;
+    private Double longitude;
     @CreationTimestamp
     private Instant createdOn;
     private Instant executionStartTime = null;
