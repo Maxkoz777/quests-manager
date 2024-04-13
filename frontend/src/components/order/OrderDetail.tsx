@@ -9,6 +9,7 @@ import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { MapView } from "../map/MapView";
 import { PickOrder } from "./PickOrder";
 import { CompleteOrder } from "./CompleteOrder";
+import prettyMilliseconds from "pretty-ms";
 
 export const OrderDetail = () => {
   const [order, setOrder] = useState<Order>();
@@ -59,10 +60,16 @@ export const OrderDetail = () => {
                 widthSx={{ width: "120px" }}
               />
               <Row
+                title="Duration"
+                content={prettyMilliseconds(order?.executionDuration * 1000, {
+                  verbose: true,
+                })}
+                sx={{}}
+                widthSx={{ width: "120px" }}
+              />
+              <Row
                 title="Status"
-                content={
-                  (order.orderStatus && order.orderStatus) || "Available"
-                }
+                content={order.orderStatus}
                 sx={{}}
                 widthSx={{ width: "120px" }}
               />
