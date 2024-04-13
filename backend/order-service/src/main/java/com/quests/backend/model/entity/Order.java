@@ -31,6 +31,9 @@ public class Order {
     private String executorId;
     private Double latitude;
     private Double longitude;
+    private Long executionDuration;
+    private Instant executionPeriodStart;
+    private Instant executionPeriodEnd;
     @CreationTimestamp
     private Instant createdOn;
     private Instant executionStartTime = null;
