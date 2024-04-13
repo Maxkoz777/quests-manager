@@ -1,15 +1,16 @@
-import { Grid, Paper, SxProps, Theme, Typography } from "@mui/material";
-import { Base } from "./Base";
+import { Box, Grid, Paper, SxProps, Theme, Typography } from "@mui/material";
+import { Base } from "../utils/Base";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { Order } from "../models/Order";
-import { VITE_API_URL } from "../utils/ApiUtils";
+import { Order } from "../../models/Order";
+import { VITE_API_URL } from "../../utils/ApiUtils";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import { MapView } from "./MapView";
-import { PickTask } from "./PickTask";
+import { MapView } from "../map/MapView";
+import { PickOrder } from "./PickOrder";
+import { CompleteOrder } from "./CompleteOrder";
 
-export const TaskDetail = () => {
+export const OrderDetail = () => {
   const [order, setOrder] = useState<Order>();
   const params = useParams();
   const authHeader = useAuthHeader();
@@ -93,7 +94,10 @@ export const TaskDetail = () => {
                   widthSx={{ width: "120px" }}
                 />
               )}
-              <PickTask taskId={id} />
+              <Box sx={{ gap: "1rem", display: "flex" }}>
+                <PickOrder orderId={id} />
+                <CompleteOrder orderId={id} />
+              </Box>
             </>
           )}
         </Grid>

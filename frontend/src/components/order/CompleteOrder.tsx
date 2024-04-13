@@ -1,20 +1,20 @@
 import axios from "axios";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { toast } from "react-toastify";
-import { VITE_API_URL } from "../utils/ApiUtils";
+import { VITE_API_URL } from "../../utils/ApiUtils";
 import { Button } from "@mui/material";
 
 interface Prop {
-  taskId: number;
+  orderId: number;
 }
 
-export const PickTask = ({ taskId }: Prop) => {
+export const CompleteOrder = ({ orderId }: Prop) => {
   const authHeader = useAuthHeader();
 
-  const handlePickTask = () => {
+  const handleCompleteOrder = () => {
     toast.promise(
       axios.post(
-        `${VITE_API_URL}/orders/execute/${taskId}`,
+        `${VITE_API_URL}/orders/finish/${orderId}`,
         {},
         {
           headers: {
@@ -24,19 +24,19 @@ export const PickTask = ({ taskId }: Prop) => {
       ),
       {
         pending: "...",
-        success: "Successfully picked",
-        error: "Error picking this task",
+        success: "Successfully completed",
+        error: "Error marking this order as complete",
       }
     );
   };
 
   return (
     <Button
-      onClick={handlePickTask}
+      onClick={handleCompleteOrder}
       variant="contained"
       sx={{ marginTop: "1.5rem" }}
     >
-      Pick Task
+      Complete Order
     </Button>
   );
 };

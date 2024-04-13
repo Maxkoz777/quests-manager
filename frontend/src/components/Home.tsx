@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Base } from "./Base";
+import { Base } from "./utils/Base";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import axios, { AxiosError } from "axios";
 import { Box, Card, CardContent, Grid, Paper, Stack } from "@mui/material";
 import { Order } from "../models/Order";
 import { VITE_API_URL } from "../utils/ApiUtils";
-import { MapView } from "./MapView";
-import { TruncatedText } from "./TruncatedText";
-import { PickTask } from "./PickTask";
+import { MapView } from "./map/MapView";
+import { TruncatedText } from "./utils/TruncatedText";
+import { PickOrder } from "./order/PickOrder";
 
 export const Home = () => {
   const [error, setError] = useState("");
@@ -59,7 +59,7 @@ export const Home = () => {
             >
               {orders &&
                 orders.map((order, idx) => (
-                  <TaskCard order={order} idx={idx} key={idx} />
+                  <OrderCard order={order} idx={idx} key={idx} />
                 ))}
               {error && <div>{error}</div>}
             </Stack>
@@ -71,7 +71,7 @@ export const Home = () => {
             md={9}
           >
             <Paper elevation={3} sx={{ height: "100%" }}>
-              <MapView create={false} />
+              <MapView create={false} orders={orders} />
             </Paper>
           </Grid>
         </Grid>
@@ -80,12 +80,12 @@ export const Home = () => {
   );
 };
 
-interface TaskCardProp {
+interface OrderCardProp {
   order: Order;
   idx: number;
 }
 
-const TaskCard = ({ order, idx }: TaskCardProp) => {
+const OrderCard = ({ order, idx }: OrderCardProp) => {
   return (
     <Grid item key={idx}>
       <Card key={idx}>
@@ -93,7 +93,7 @@ const TaskCard = ({ order, idx }: TaskCardProp) => {
           sx={{ display: "flex", flexDirection: "column", padding: "10px" }}
         >
           <Link
-            to={{ pathname: `/task-detail/${order.id}` }}
+            to={{ pathname: `/order-detail/${order.id}` }}
             style={{ textDecoration: "none" }}
           >
             <Paper elevation={2} sx={{ padding: "10px" }}>
@@ -103,7 +103,7 @@ const TaskCard = ({ order, idx }: TaskCardProp) => {
             </Paper>
           </Link>
           <Box sx={{ alignSelf: "flex-end" }}>
-            <PickTask taskId={order.id} />
+            <PickOrder orderId={order.id} />
           </Box>
         </CardContent>
       </Card>

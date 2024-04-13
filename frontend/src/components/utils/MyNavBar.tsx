@@ -11,9 +11,9 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import { Link } from "react-router-dom";
-import { LogoutButton } from "./Logout";
+import { LogoutButton } from "../auth/Logout";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
-import { VITE_APP_TITLE } from "../utils/ApiUtils";
+import { VITE_APP_TITLE } from "../../utils/ApiUtils";
 
 export const MyNavBar = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -106,8 +106,8 @@ export const MyNavBar = () => {
                         gap: "20px",
                       }}
                     >
-                      <Link to={{ pathname: "/new-task" }}>
-                        <Button variant="contained">Create Task</Button>
+                      <Link to={{ pathname: "/new-order" }}>
+                        <Button variant="contained">Create Order</Button>
                       </Link>
                       <LogoutButton />
                     </Box>
@@ -160,8 +160,8 @@ export const MyNavBar = () => {
           >
             {isAuthenticated() && (
               <Box sx={{ display: "flex", gap: "20px" }}>
-                <Link to={{ pathname: "/new-task" }}>
-                  <Button variant="contained">Create Task</Button>
+                <Link to={{ pathname: "/new-order" }}>
+                  <Button variant="contained">Create Order</Button>
                 </Link>
                 <LogoutButton />
               </Box>
