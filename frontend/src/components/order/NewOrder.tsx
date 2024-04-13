@@ -9,6 +9,7 @@ import { MapView } from "../map/MapView";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { useState } from "react";
 import { Coordinate } from "../../models/Coordinate";
+import { useUserCoordinates } from "../../hooks/useUserCoordinates";
 
 export const NewOrder = () => {
   const {
@@ -17,6 +18,8 @@ export const NewOrder = () => {
     formState: { errors },
     reset,
   } = useForm<OrderCreate>();
+  const userCoordinates = useUserCoordinates();
+  const [locationPicked, setLocationPicked] = useState<boolean>(false);
 
   const [coordinates, setCoordinates] = useState<Coordinate>();
 
@@ -29,6 +32,14 @@ export const NewOrder = () => {
     description,
     cost,
   }) => {
+    if (!coordinates) {
+      userCoordinates &&
+        setCoordinates({
+          latitude: userCoordinates?.latitude,
+          longitude: userCoordinates?.longitude,
+        });
+    }
+
     const payload: OrderCreate = {
       title,
       description,
@@ -95,6 +106,9 @@ export const NewOrder = () => {
               />
               {errors.cost && <span>This field is required</span>}
             </Box>
+            {locationPicked && (
+              <Box sx={{ color: "#ff00ff", mt: "1rem" }}>Location picked</Box>
+            )}
             <Button
               fullWidth
               variant="contained"
@@ -111,6 +125,7 @@ export const NewOrder = () => {
               create={true}
               coordinates={coordinates}
               setCoordinates={setCoordinates}
+              setLocationPicked={setLocationPicked}
             />
           </Paper>
         </Grid>
