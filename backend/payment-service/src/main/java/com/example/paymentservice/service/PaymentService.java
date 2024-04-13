@@ -33,7 +33,7 @@ public class PaymentService {
         sendingResult.whenComplete((result, error) -> log.info("Message successfully sent"));
     }
 
-    @KafkaListener(topics = "payment.initiate")
+    @KafkaListener(topics = "payment.execution")
     public void processPayment(PaymentMessage message) {
         log.info("Received message from order service: {}", message);
         log.info("Sending predefined message to order service");
