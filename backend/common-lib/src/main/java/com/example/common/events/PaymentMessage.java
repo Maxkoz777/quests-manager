@@ -1,6 +1,6 @@
 package com.example.common.events;
 
-public record PaymentCreationMessage(
+public record PaymentMessage(
     String traceId,
     long orderId,
     double cost,
