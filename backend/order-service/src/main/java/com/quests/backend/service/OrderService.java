@@ -6,6 +6,7 @@ import com.example.common.events.NotificationMessage;
 import com.example.common.events.PaymentCreationMessage;
 import com.example.common.events.PaymentReservationMessage;
 import com.example.common.events.enums.OrderStatus;
+import com.quests.backend.exception.NoSuchOrderException;
 import com.quests.backend.model.OrderMapper;
 import com.quests.backend.model.dto.OrderCreationRequest;
 import com.quests.backend.model.entity.Order;
@@ -105,5 +106,23 @@ public class OrderService {
             log.info("Updating the status for order {}", fraudResultMessage.orderId());
             orderRepository.saveAndFlush(order);
         }
+    }
+
+    public void finishOrderExecution(long orderId, String userId) {
+        var traceId = UUID.randomUUID().toString();
+        var order = orderRepository.findById(orderId).orElseThrow(NoSuchOrderException::new);
+        if (!order.getExecutorId().equals(userId)) {
+            log.error("Order {} is not being executed by the current user {}", orderId, userId);
+            throw new RuntimeException("Order is not being executed by the current user");
+        }
+        log.info("Retrieved order with id={}", order.getId());
+        order.setOrderStatus(OrderStatus.EXECUTION_FINISHED);
+        log.info("Sending notification for the Order owner for confirmation");
+        var notification = new NotificationMessage(traceId, orderId,
+                                                   "Your order \"%s\" was executed, please confirm it".formatted(
+                                                       order.getTitle()));
+        notificationKafkaTemplate.send("user.notification.order.update", notification)
+            .whenComplete((result, error) -> log.info("Notification successfully sent"));
+        orderRepository.saveAndFlush(order);
     }
 }

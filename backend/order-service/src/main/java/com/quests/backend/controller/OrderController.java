@@ -114,4 +114,18 @@ public class OrderController {
         orderService.executeOrder(orderId, userId);
         return ResponseEntity.ok("Task execution request is sent for processing");
     }
+
+    @Operation(
+        summary = "Finish order",
+        description = "Finish order execution with provided id"
+    )
+    @ApiResponse(responseCode = "200")
+    @ApiResponse(responseCode = "401")
+    @PostMapping("/finish/{orderId}")
+    public ResponseEntity<String> finishTaskExecution(@PathVariable("orderId") long orderId, Principal principal) {
+        var userId = principal.getName();
+        log.info("Initiated task finalization process with orderId={} by user={}", orderId, userId);
+        orderService.finishOrderExecution(orderId, userId);
+        return ResponseEntity.ok("Order is marked finished by the doer");
+    }
 }
