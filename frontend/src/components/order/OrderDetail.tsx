@@ -9,9 +9,13 @@ import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { MapView } from "../map/MapView";
 import { PickOrder } from "./PickOrder";
 import { CompleteOrder } from "./CompleteOrder";
+import prettyMilliseconds from "pretty-ms";
 
 export const OrderDetail = () => {
   const [order, setOrder] = useState<Order>();
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [pickedStatus, setPickStatus] = useState<boolean>(false);
+  const [completedStatus, setCompletedStatus] = useState<boolean>(false);
   const params = useParams();
   const authHeader = useAuthHeader();
 
@@ -24,6 +28,7 @@ export const OrderDetail = () => {
       })
       .then((res: AxiosResponse) => {
         setOrder(res.data);
+        setOrders([res.data]);
       })
       .catch((err) => {
         if (err && err instanceof AxiosError) {
@@ -32,7 +37,13 @@ export const OrderDetail = () => {
           console.log(err.message);
         }
       });
-  }, [authHeader, id, order?.executionStartTime]);
+  }, [
+    authHeader,
+    id,
+    order?.executionStartTime,
+    pickedStatus,
+    completedStatus,
+  ]);
 
   return (
     <Base>
@@ -59,10 +70,16 @@ export const OrderDetail = () => {
                 widthSx={{ width: "120px" }}
               />
               <Row
+                title="Duration"
+                content={prettyMilliseconds(order?.executionDuration * 1000, {
+                  verbose: true,
+                })}
+                sx={{}}
+                widthSx={{ width: "120px" }}
+              />
+              <Row
                 title="Status"
-                content={
-                  (order.orderStatus && order.orderStatus) || "Available"
-                }
+                content={order.orderStatus}
                 sx={{}}
                 widthSx={{ width: "120px" }}
               />
@@ -95,8 +112,11 @@ export const OrderDetail = () => {
                 />
               )}
               <Box sx={{ gap: "1rem", display: "flex" }}>
-                <PickOrder orderId={id} />
-                <CompleteOrder orderId={id} />
+                <PickOrder orderId={id} setPickStatus={setPickStatus} />
+                <CompleteOrder
+                  orderId={id}
+                  setCompletedStatus={setCompletedStatus}
+                />
               </Box>
             </>
           )}
@@ -104,7 +124,7 @@ export const OrderDetail = () => {
 
         <Grid item xs={0} sx={{ display: { xs: "none", md: "block" } }} md={9}>
           <Paper elevation={3} sx={{ height: "100%" }}>
-            <MapView create={false} />
+            <MapView create={false} orders={orders} />
           </Paper>
         </Grid>
       </Grid>

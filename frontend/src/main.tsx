@@ -9,6 +9,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { YMaps } from "@pbe/react-yandex-maps";
 import { VITE_YANDEX_API_KEY } from "./utils/ApiUtils.ts";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const store = createStore<User>({
   authName: "_auth",
@@ -30,7 +32,9 @@ root.render(
             apikey: `${VITE_YANDEX_API_KEY}`,
           }}
         >
-          <App />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <App />
+          </LocalizationProvider>
         </YMaps>
       </BrowserRouter>
     </AuthProvider>

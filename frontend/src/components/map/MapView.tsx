@@ -15,6 +15,7 @@ interface Prop {
   coordinates?: Coordinate | undefined;
   orders?: Order[];
   setCoordinates?: React.Dispatch<React.SetStateAction<Coordinate | undefined>>;
+  setLocationPicked?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const MapView = ({
@@ -22,6 +23,7 @@ export const MapView = ({
   coordinates,
   setCoordinates,
   orders,
+  setLocationPicked,
 }: Prop) => {
   const userCoordinates = useUserCoordinates();
 
@@ -29,6 +31,7 @@ export const MapView = ({
     const [latitude, longitude] = event.get("coords");
 
     setCoordinates && setCoordinates({ latitude, longitude });
+    setLocationPicked && setLocationPicked(true);
   };
 
   return (
@@ -39,7 +42,7 @@ export const MapView = ({
           height={"100%"}
           defaultState={{
             center: [userCoordinates?.latitude, userCoordinates?.longitude],
-            zoom: 15,
+            zoom: 17,
           }}
           onClick={handleClick}
         >
@@ -62,33 +65,6 @@ export const MapView = ({
                 />
               );
             })}
-          {/* <Placemark
-            geometry={[55.751643, 48.743429]}
-            properties={{
-              iconCaption: "Clear snow 0:30:45",
-              hintContent:
-                "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            }}
-            options={{
-              hideIconOnBalloonOpen: false,
-              balloonCloseButton: false,
-            }}
-          />
-          <Placemark
-            geometry={[55.753757, 48.742903]}
-            properties={{
-              iconCaption: "Pick up parcel 0:52:11",
-              hintContent:
-                "There's a parcel at the post office that I need you to deliver to my office.",
-            }}
-          />
-          <Placemark
-            geometry={[55.751971, 48.748471]}
-            properties={{
-              iconCaption: "Take out garbage",
-              hintContent: "I need you to help me take out the garbage",
-            }}
-          /> */}
           {create && coordinates && (
             <Placemark
               geometry={[coordinates?.latitude, coordinates?.longitude]}

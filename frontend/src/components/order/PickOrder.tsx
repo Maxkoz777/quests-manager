@@ -6,13 +6,14 @@ import { Button } from "@mui/material";
 
 interface Prop {
   orderId: number;
+  setPickStatus?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const PickOrder = ({ orderId }: Prop) => {
+export const PickOrder = ({ orderId, setPickStatus }: Prop) => {
   const authHeader = useAuthHeader();
 
-  const handlePickOrder = () => {
-    toast.promise(
+  const handlePickOrder = async () => {
+    const result = await toast.promise(
       axios.post(
         `${VITE_API_URL}/orders/execute/${orderId}`,
         {},
@@ -28,6 +29,10 @@ export const PickOrder = ({ orderId }: Prop) => {
         error: "Error picking this order",
       }
     );
+
+    if (result.status === 200) {
+      setPickStatus && setPickStatus(true);
+    }
   };
 
   return (

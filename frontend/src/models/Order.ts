@@ -5,10 +5,11 @@ export interface Order {
   latitude: number;
   longitude: number;
   cost: number;
-  orderStatus?: string;
+  orderStatus: string;
   creatorId: string;
   executorId: string;
   createdOn: Date;
+  executionDuration: number;
   executionStartTime?: Date;
   executionFinishTime?: Date;
 }
@@ -19,7 +20,7 @@ export interface OrderCreate {
   latitude?: number;
   longitude?: number;
   cost: number;
-  executionDuration: number;
+  executionDuration: number; // in seconds
   executionPeriodStart: Date;
   executionPeriodEnd: Date;
 }
