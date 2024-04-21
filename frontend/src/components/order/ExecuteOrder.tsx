@@ -4,18 +4,18 @@ import { toast } from "react-toastify";
 import { VITE_API_URL } from "../../utils/ApiUtils";
 import { Button } from "@mui/material";
 
-interface Prop {
+interface Props {
   orderId: number;
   setPickStatus?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const PickOrder = ({ orderId, setPickStatus }: Prop) => {
+export const ExecuteOrder = ({ orderId, setPickStatus }: Props) => {
   const authHeader = useAuthHeader();
 
   const handlePickOrder = async () => {
     const result = await toast.promise(
       axios.post(
-        `${VITE_API_URL}/orders/execute/${orderId}`,
+        `${VITE_API_URL}/orders/execution/start/${orderId}`,
         {},
         {
           headers: {
@@ -25,8 +25,8 @@ export const PickOrder = ({ orderId, setPickStatus }: Prop) => {
       ),
       {
         pending: "...",
-        success: "Successfully picked",
-        error: "Error picking this order",
+        success: "Successfully taken",
+        error: "Error taking this order",
       }
     );
 
@@ -41,7 +41,7 @@ export const PickOrder = ({ orderId, setPickStatus }: Prop) => {
       variant="contained"
       sx={{ marginTop: "1.5rem" }}
     >
-      Pick Order
+      Take Order
     </Button>
   );
 };

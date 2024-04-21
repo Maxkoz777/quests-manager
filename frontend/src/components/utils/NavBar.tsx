@@ -14,8 +14,10 @@ import { Link } from "react-router-dom";
 import { LogoutButton } from "../auth/Logout";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import { VITE_APP_TITLE } from "../../utils/ApiUtils";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import { User } from "../../models/User";
 
-export const MyNavBar = () => {
+export const NavBar = () => {
   const isAuthenticated = useIsAuthenticated();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -26,6 +28,8 @@ export const MyNavBar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const auth = useAuthUser<User>();
 
   return (
     <AppBar>
@@ -109,6 +113,12 @@ export const MyNavBar = () => {
                       <Link to={{ pathname: "/new-order" }}>
                         <Button variant="contained">Create Order</Button>
                       </Link>
+                      <Link to={{ pathname: "/profile" }}>
+                        <Button variant="contained">Profile</Button>
+                      </Link>
+                      <Button variant="contained">
+                        <Typography>Hello {auth?.username}</Typography>
+                      </Button>
                       <LogoutButton />
                     </Box>
                   )}
@@ -163,18 +173,24 @@ export const MyNavBar = () => {
                 <Link to={{ pathname: "/new-order" }}>
                   <Button variant="contained">Create Order</Button>
                 </Link>
+                <Link to={{ pathname: "/profile" }}>
+                  <Button variant="contained">Profile</Button>
+                </Link>
+                <Button variant="contained">
+                  <Typography>Hello {auth?.username}</Typography>
+                </Button>
                 <LogoutButton />
               </Box>
             )}
             {!isAuthenticated() && (
-              <>
+              <Box sx={{ display: "flex", gap: "20px" }}>
                 <Link to={{ pathname: "/login" }}>
                   <Button variant="contained">Login</Button>
                 </Link>
                 <Link to={{ pathname: "/register" }}>
                   <Button variant="contained">Register</Button>
                 </Link>
-              </>
+              </Box>
             )}
           </Box>
         </Toolbar>
