@@ -7,8 +7,8 @@ import { Order } from "../../models/Order";
 import { VITE_API_URL } from "../../utils/ApiUtils";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { MapView } from "../map/MapView";
-import { PickOrder } from "./PickOrder";
-import { CompleteOrder } from "./CompleteOrder";
+import { ExecuteOrder } from "./ExecuteOrder";
+import { FinishExecution } from "./FinishExecution";
 import prettyMilliseconds from "pretty-ms";
 
 export const OrderDetail = () => {
@@ -112,8 +112,8 @@ export const OrderDetail = () => {
                 />
               )}
               <Box sx={{ gap: "1rem", display: "flex" }}>
-                <PickOrder orderId={id} setPickStatus={setPickStatus} />
-                <CompleteOrder
+                <ExecuteOrder orderId={id} setPickStatus={setPickStatus} />
+                <FinishExecution
                   orderId={id}
                   setCompletedStatus={setCompletedStatus}
                 />
@@ -124,7 +124,12 @@ export const OrderDetail = () => {
 
         <Grid item xs={0} sx={{ display: { xs: "none", md: "block" } }} md={9}>
           <Paper elevation={3} sx={{ height: "100%" }}>
-            <MapView create={false} orders={orders} />
+            <MapView
+              create={false}
+              orders={orders}
+              order={order}
+              preferOrderCoordinate={true}
+            />
           </Paper>
         </Grid>
       </Grid>
@@ -132,17 +137,14 @@ export const OrderDetail = () => {
   );
 };
 
-const Row = ({
-  title,
-  widthSx,
-  sx,
-  content,
-}: {
+interface RowProps {
   title: string | undefined;
   content: string | undefined;
   sx: SxProps<Theme> | undefined;
   widthSx: SxProps<Theme> | undefined;
-}) => {
+}
+
+const Row = ({ title, widthSx, sx, content }: RowProps) => {
   return (
     <Grid item xs={12}>
       <Grid container>

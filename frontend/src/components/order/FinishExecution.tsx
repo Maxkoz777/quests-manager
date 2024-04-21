@@ -4,18 +4,18 @@ import { toast } from "react-toastify";
 import { VITE_API_URL } from "../../utils/ApiUtils";
 import { Button } from "@mui/material";
 
-interface Prop {
+interface Props {
   orderId: number;
-  setCompletedStatus: React.Dispatch<React.SetStateAction<boolean>>;
+  setCompletedStatus?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const CompleteOrder = ({ orderId, setCompletedStatus }: Prop) => {
+export const FinishExecution = ({ orderId, setCompletedStatus }: Props) => {
   const authHeader = useAuthHeader();
 
   const handleCompleteOrder = async () => {
     const result = await toast.promise(
       axios.post(
-        `${VITE_API_URL}/orders/finish/${orderId}`,
+        `${VITE_API_URL}/orders/execution/finish/${orderId}`,
         {},
         {
           headers: {
@@ -31,7 +31,7 @@ export const CompleteOrder = ({ orderId, setCompletedStatus }: Prop) => {
     );
 
     if (result.status === 200) {
-      setCompletedStatus(true);
+      setCompletedStatus && setCompletedStatus(true);
     }
   };
 
