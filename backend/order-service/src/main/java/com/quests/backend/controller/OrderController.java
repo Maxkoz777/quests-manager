@@ -29,23 +29,71 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/orders")
 @SecurityRequirement(name = "Keycloak")
 @Tag(name = "Order Controller", description = "Order controller APIs")
-public class OrderController {  // todo: divide to orderController & executionController
+public class OrderController {
 
     private final OrderService orderService;
 
     @Operation(
-        summary = "Get all orders",
-        description = "Get list of all orders from storage"
+        summary = "Get all available orders",
+        description = "Get list of all orders available for execution from storage"
     )
     @ApiResponse(
         responseCode = "200",
         content = {@Content(schema = @Schema(implementation = Order.class))}
     )
     @ApiResponse(responseCode = "401")
-    @GetMapping
-    public ResponseEntity<List<Order>> getAllOrders(Principal principal) {
+    @GetMapping("/available")
+    public ResponseEntity<List<Order>> getAllAvailableOrders(Principal principal) {
         var userId = principal.getName();
         var orders = orderService.getAllAvailableOrders(userId);
+        return ResponseEntity.ok(orders);
+    }
+
+    @Operation(
+        summary = "Get all created orders",
+        description = "Get list of all orders created by current user"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        content = {@Content(schema = @Schema(implementation = Order.class))}
+    )
+    @ApiResponse(responseCode = "401")
+    @GetMapping("/created")
+    public ResponseEntity<List<Order>> getAllCreatedOrders(Principal principal) {
+        var userId = principal.getName();
+        var orders = orderService.getAllCreatedOrders(userId);
+        return ResponseEntity.ok(orders);
+    }
+
+    @Operation(
+        summary = "Get all taken orders",
+        description = "Get list of all orders taken by current user"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        content = {@Content(schema = @Schema(implementation = Order.class))}
+    )
+    @ApiResponse(responseCode = "401")
+    @GetMapping("/taken")
+    public ResponseEntity<List<Order>> getAllTakenOrders(Principal principal) {
+        var userId = principal.getName();
+        var orders = orderService.getAllTakenOrders(userId);
+        return ResponseEntity.ok(orders);
+    }
+
+    @Operation(
+        summary = "Get all current orders",
+        description = "Get list of all orders being executed by current user"
+    )
+    @ApiResponse(
+        responseCode = "200",
+        content = {@Content(schema = @Schema(implementation = Order.class))}
+    )
+    @ApiResponse(responseCode = "401")
+    @GetMapping("/current")
+    public ResponseEntity<List<Order>> getAllCurrentOrders(Principal principal) {
+        var userId = principal.getName();
+        var orders = orderService.getAllCurrentOrders(userId);
         return ResponseEntity.ok(orders);
     }
 
@@ -99,47 +147,5 @@ public class OrderController {  // todo: divide to orderController & executionCo
     public ResponseEntity<Order> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrderById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @Operation(
-        summary = "Execute order",
-        description = "Take an order with provided id for execution"
-    )
-    @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401")
-    @PostMapping("/execute/{orderId}")
-    public ResponseEntity<String> initTaskExecution(@PathVariable("orderId") long orderId, Principal principal) {
-        var userId = principal.getName();
-        log.info("Initiated task execution with orderId={} by user={}", orderId, userId);
-        orderService.executeOrder(orderId, userId);
-        return ResponseEntity.ok("Task execution request is sent for processing");
-    }
-
-    @Operation(
-        summary = "Finish order",
-        description = "Finish order execution with provided id"
-    )
-    @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401")
-    @PostMapping("/finish/{orderId}")
-    public ResponseEntity<String> finishTaskExecution(@PathVariable("orderId") long orderId, Principal principal) {
-        var userId = principal.getName();
-        log.info("Initiated task finalization process with orderId={} by user={}", orderId, userId);
-        orderService.finishOrderExecution(orderId, userId);
-        return ResponseEntity.ok("Order is marked finished by the doer");
-    }
-
-    @Operation(
-        summary = "Finish order",
-        description = "Finish order execution with provided id"
-    )
-    @ApiResponse(responseCode = "200")
-    @ApiResponse(responseCode = "401")
-    @PostMapping("/validate/{orderId}")
-    public ResponseEntity<String> validateOrderExecution(@PathVariable("orderId") long orderId, Principal principal) {
-        var userId = principal.getName();
-        log.info("Validating order execution process with orderId={} by user={}", orderId, userId);
-        orderService.validateOrderExecution(orderId, userId);
-        return ResponseEntity.ok("Order was closed by the author");
     }
 }
