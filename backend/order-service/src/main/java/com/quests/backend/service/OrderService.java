@@ -41,8 +41,28 @@ public class OrderService {
     private final OrderMapper orderMapper;
 
     public List<Order> getAllAvailableOrders(String userId) {
-        var orders = orderRepository.findOrderByCreatorIdIsNot(userId);
-        log.info("Retrieved {} order(s) from storage", orders.size());
+        var orders = orderRepository.findOrderByCreatorIdIsNotAndOrderStatusEquals(userId, OrderStatus.CREATED);
+        log.info("Retrieved {} order(s) that can be executed by user {}", orders.size(), userId);
+        return orders;
+    }
+
+    public List<Order> getAllCreatedOrders(String userId) {
+        var orders = orderRepository.findOrderByCreatorIdIs(userId);
+        log.info("Retrieved {} order(s) created by user {}", orders.size(), userId);
+        return orders;
+    }
+
+    public List<Order> getAllTakenOrders(String userId) {
+        var orders = orderRepository.findOrderByExecutorIdIs(userId);
+        log.info("Retrieved {} order(s) that are taken by user {}", orders.size(), userId);
+        return orders;
+    }
+
+    public List<Order> getAllCurrentOrders(String userId) {
+        var orders = orderRepository.findOrderByExecutorIdIs(userId).stream()
+            .filter(order -> order.getOrderStatus() == OrderStatus.IN_PROGRESS)
+            .toList();
+        log.info("Retrieved {} order(s) that are currently being executed by user {}", orders.size(), userId);
         return orders;
     }
 
