@@ -93,7 +93,7 @@ public class OrderService {
         var traceId = UUID.randomUUID().toString();
         var order = orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
         var creatorId = order.getCreatorId();
-        var paymentMessage = new PaymentMessage(traceId, orderId, 12.34, creatorId, userId);
+        var paymentMessage = new PaymentMessage(traceId, orderId, order.getCost(), creatorId, userId);
         paymentKafkaTemplate.send("payment.initiate", paymentMessage);
         log.info("Payment process initiating, returning result to client");
     }
