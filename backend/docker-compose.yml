@@ -35,6 +35,8 @@ services:
   zookeeper:
     image: wurstmeister/zookeeper
     container_name: zookeeper
+    volumes:
+      - kafka_data:/var/lib/kafka/data
     ports:
       - "2181:2181"
     networks:
@@ -43,6 +45,8 @@ services:
   kafka:
     image: wurstmeister/kafka
     container_name: kafka
+    volumes:
+      - zk_data:/var/lib/zookeeper/data
     ports:
       - "9092:9092"
       - "9093:9093" # Expose an additional port for the OUTSIDE listener
@@ -174,3 +178,5 @@ networks:
 
 volumes:
   postgres:
+  kafka_data:
+  zk_data:
