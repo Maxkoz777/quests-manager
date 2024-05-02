@@ -19,7 +19,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://${KEYCLOAK_HOST:localhost}:8080/realms/prototype
+          issuer-uri: http://${KEYCLOAK_HOST:localhost}:8080/realms/quests
   kafka:
     bootstrap-servers: ${KAFKA_HOST:localhost}:9093
     producer:
@@ -33,8 +33,8 @@ spring:
 springdoc:
   swagger-ui:
     oauth:
-      client-id: prototype
-      client-secret: wV0RSSaErRX2rBsdIPcXjJ5LmYj5hEdk
+      client-id: quests
+      client-secret: UY2eqScgPZqttFIYkn5Aiv46CwhkY6i7
 openapi:
   dev-url: http://localhost:8083
   prod-url: http://localhost:8083
