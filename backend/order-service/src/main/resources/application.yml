@@ -21,7 +21,7 @@ spring:
         jwt:
           issuer-uri: http://${KEYCLOAK_HOST:localhost}:8080/realms/quests
   kafka:
-    bootstrap-servers: ${KAFKA_HOST:localhost}:9092
+    bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:9093}
     consumer:
       group-id: order-consumer-group
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
