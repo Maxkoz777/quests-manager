@@ -15,6 +15,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
+            .cors(Customizer.withDefaults())
             .authorizeHttpRequests(
                 authorize -> authorize
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/keycloak/*").permitAll()
