@@ -32,7 +32,7 @@ public class PaymentHandler {
         var paymentReservationMessage = new PaymentReservationMessage(
             "traceId",
             message.orderId(),
-            paymentStatus,
+            PaymentStatus.SUCCESSFUL,
             "some message",
             message.creatorId(),
             message.executorId()
@@ -51,7 +51,7 @@ public class PaymentHandler {
         var paymentReservationMessage = new PaymentReservationMessage(
             "traceId",
             message.orderId(),
-            paymentStatus,
+            PaymentStatus.SUCCESSFUL,
             "some message",
             message.creatorId(),
             message.executorId()
