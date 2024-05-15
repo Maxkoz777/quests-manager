@@ -113,12 +113,14 @@ export const NavBar = () => {
                       <Link to={{ pathname: "/new-order" }}>
                         <Button variant="contained">Create Order</Button>
                       </Link>
-                      <Link to={{ pathname: "/profile" }}>
-                        <Button variant="contained">Profile</Button>
+                      <Link to={{ pathname: "/dashboard" }}>
+                        <Button variant="contained">Dashboard</Button>
                       </Link>
-                      <Button variant="contained">
-                        <Typography>Hello {auth?.username}</Typography>
-                      </Button>
+                      <Link to={{ pathname: "/profile" }}>
+                        <Button variant="contained">
+                          <Typography>{auth?.username} Profile</Typography>
+                        </Button>
+                      </Link>
                       <LogoutButton />
                     </Box>
                   )}
@@ -173,12 +175,17 @@ export const NavBar = () => {
                 <Link to={{ pathname: "/new-order" }}>
                   <Button variant="contained">Create Order</Button>
                 </Link>
-                <Link to={{ pathname: "/profile" }}>
-                  <Button variant="contained">Profile</Button>
+                <Link to={{ pathname: "/dashboard" }}>
+                  <Button variant="contained">Dashboard</Button>
                 </Link>
-                <Button variant="contained">
+                <Link to={{ pathname: "/profile" }}>
+                  <Button variant="contained">
+                    <Typography>{auth?.username} Profile</Typography>
+                  </Button>
+                </Link>
+                {/* <Button variant="contained">
                   <Typography>Hello {auth?.username}</Typography>
-                </Button>
+                </Button> */}
                 <LogoutButton />
               </Box>
             )}

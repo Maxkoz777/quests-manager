@@ -7,6 +7,7 @@ import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import { OrderDetail } from "./components/order/OrderDetail";
 import { NewOrder } from "./components/order/NewOrder";
 import { Dashboard } from "./components/dashboard/Dashboard";
+import { Profile } from "./components/profile/Profile";
 
 export const App = () => {
   return (
@@ -17,7 +18,8 @@ export const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/order-detail/:id" element={<OrderDetail />} />
         <Route path="/new-order" element={<NewOrder />} />
-        <Route path="/profile" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );
