@@ -183,9 +183,6 @@ export const NavBar = () => {
                     <Typography>{auth?.username} Profile</Typography>
                   </Button>
                 </Link>
-                {/* <Button variant="contained">
-                  <Typography>Hello {auth?.username}</Typography>
-                </Button> */}
                 <LogoutButton />
               </Box>
             )}
