@@ -11,6 +11,7 @@ import { YMaps } from "@pbe/react-yandex-maps";
 import { VITE_YANDEX_API_KEY } from "./utils/ApiUtils.ts";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const store = createStore<User>({
   authName: "_auth",
@@ -23,6 +24,8 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const queryClient = new QueryClient();
+
 root.render(
   <React.StrictMode>
     <AuthProvider store={store}>
@@ -33,7 +36,9 @@ root.render(
           }}
         >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <App />
+            <QueryClientProvider client={queryClient}>
+              <App />
+            </QueryClientProvider>
           </LocalizationProvider>
         </YMaps>
       </BrowserRouter>

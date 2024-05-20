@@ -1,43 +1,29 @@
-import axios from "axios";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import { toast } from "react-toastify";
-import { VITE_API_URL } from "../../utils/ApiUtils";
 import { Button } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { handleCompleteOrder } from "../../utils/Api";
 
 interface Props {
   orderId: number;
-  setCompletedStatus?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const FinishExecution = ({ orderId, setCompletedStatus }: Props) => {
+export const FinishExecution = ({ orderId }: Props) => {
   const authHeader = useAuthHeader();
 
-  const handleCompleteOrder = async () => {
-    const result = await toast.promise(
-      axios.post(
-        `${VITE_API_URL}/orders/execution/finish/${orderId}`,
-        {},
-        {
-          headers: {
-            Authorization: authHeader,
-          },
-        }
-      ),
-      {
-        pending: "...",
-        success: "Successfully completed",
-        error: "Error marking this order as complete",
-      }
-    );
+  const queryClient = useQueryClient();
 
-    if (result.status === 200) {
-      setCompletedStatus && setCompletedStatus(true);
-    }
-  };
+  const { mutateAsync } = useMutation({
+    mutationFn: () => handleCompleteOrder(orderId, authHeader),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["currentOrders", "takenOrders", "orderDetail"],
+      });
+    },
+  });
 
   return (
     <Button
-      onClick={handleCompleteOrder}
+      onClick={() => mutateAsync()}
       variant="contained"
       sx={{ marginTop: "1.5rem" }}
     >

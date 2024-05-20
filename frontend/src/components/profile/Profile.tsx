@@ -1,11 +1,12 @@
 import { Base } from "../utils/Base";
-import { useEffect, useState } from "react";
 import { VITE_PAYMENT_API_URL } from "../../utils/ApiUtils";
 import axios from "axios";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAmount } from "../../utils/Api";
 
 interface AmountModel {
   amount: number;
@@ -13,8 +14,7 @@ interface AmountModel {
 
 export const Profile = () => {
   const authHeader = useAuthHeader();
-  const [amount, setAmount] = useState<number>();
-  const [reloadTrigger, setReloadTrigger] = useState<number>();
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -23,21 +23,10 @@ export const Profile = () => {
     reset,
   } = useForm<AmountModel>();
 
-  useEffect(() => {
-    axios
-      .get(`${VITE_PAYMENT_API_URL}/payments`, {
-        headers: {
-          Authorization: authHeader,
-        },
-      })
-      .then((res) => setAmount(res.data))
-      .catch((err) => console.error("Error occured: ", err.message));
-  }, [authHeader, reloadTrigger]);
-
   const onSubmit: SubmitHandler<AmountModel> = async ({ amount }) => {
     const payload: AmountModel = { amount };
 
-    const response = await toast.promise(
+    return await toast.promise(
       axios.post<AmountModel>(
         `${VITE_PAYMENT_API_URL}/payments`,
         JSON.stringify(payload),
@@ -54,12 +43,22 @@ export const Profile = () => {
         error: "Error adding amount",
       }
     );
-
-    if (response.status === 200) {
-      reset();
-      setReloadTrigger(Math.random());
-    }
   };
+
+  const { data: amount } = useQuery({
+    queryFn: () => getAmount(authHeader),
+    queryKey: ["amount"],
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: handleSubmit(onSubmit),
+    onSuccess: () => {
+      reset();
+      queryClient.invalidateQueries({
+        queryKey: ["amount"],
+      });
+    },
+  });
 
   return (
     <Base>
@@ -75,7 +74,7 @@ export const Profile = () => {
           <Typography variant="h2">Balance: {amount}</Typography>
         </Box>
         <Box sx={{ mt: 1, width: { xs: "100%", md: "50%" } }}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={mutateAsync}>
             <TextField
               margin="normal"
               required

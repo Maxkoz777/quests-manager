@@ -5,7 +5,7 @@ import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import { OrderDetail } from "./components/order/OrderDetail";
-import { NewOrder } from "./components/order/NewOrder";
+import { CreateOrder } from "./components/order/CreateOrder";
 import { Dashboard } from "./components/dashboard/Dashboard";
 import { Profile } from "./components/profile/Profile";
 
@@ -17,7 +17,7 @@ export const App = () => {
       <Route element={<AuthOutlet fallbackPath="/login" />}>
         <Route path="/" element={<Home />} />
         <Route path="/order-detail/:id" element={<OrderDetail />} />
-        <Route path="/new-order" element={<NewOrder />} />
+        <Route path="/create-order" element={<CreateOrder />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
       </Route>

@@ -12,8 +12,9 @@ import { useState } from "react";
 import { Coordinate } from "../../models/Coordinate";
 import dayjs, { Dayjs } from "dayjs";
 import { useUserCoordinates } from "../../hooks/useUserCoordinates";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const NewOrder = () => {
+export const CreateOrder = () => {
   const {
     register,
     handleSubmit,
@@ -28,6 +29,7 @@ export const NewOrder = () => {
   const [coordinates, setCoordinates] = useState<Coordinate>();
 
   const authHeader = useAuthHeader();
+  const queryClient = useQueryClient();
 
   const onSubmit: SubmitHandler<OrderCreate> = async ({
     title,
@@ -54,7 +56,7 @@ export const NewOrder = () => {
         endValue?.toDate() ?? new Date(Date.now() + 3600 * 1000),
     };
 
-    const response = await toast.promise(
+    return await toast.promise(
       axios.post(`${VITE_API_URL}/orders`, JSON.stringify(payload), {
         headers: {
           "Content-Type": "application/json",
@@ -67,17 +69,23 @@ export const NewOrder = () => {
         error: "Error creating new order",
       }
     );
-
-    if (response.status === 201) {
-      reset();
-    }
   };
+
+  const { mutateAsync } = useMutation({
+    mutationFn: handleSubmit(onSubmit),
+    onSuccess: () => {
+      reset();
+      queryClient.invalidateQueries({
+        queryKey: ["createdOrders"],
+      });
+    },
+  });
 
   return (
     <Base>
       <Grid container spacing={2} sx={{ height: "calc(100vh - 6rem)" }}>
         <Grid item xs={12} md={3}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={mutateAsync}>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <TextField
                 margin="normal"

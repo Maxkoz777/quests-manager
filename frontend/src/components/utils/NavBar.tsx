@@ -110,7 +110,7 @@ export const NavBar = () => {
                         gap: "20px",
                       }}
                     >
-                      <Link to={{ pathname: "/new-order" }}>
+                      <Link to={{ pathname: "/create-order" }}>
                         <Button variant="contained">Create Order</Button>
                       </Link>
                       <Link to={{ pathname: "/dashboard" }}>
@@ -172,7 +172,7 @@ export const NavBar = () => {
           >
             {isAuthenticated() && (
               <Box sx={{ display: "flex", gap: "20px" }}>
-                <Link to={{ pathname: "/new-order" }}>
+                <Link to={{ pathname: "/create-order" }}>
                   <Button variant="contained">Create Order</Button>
                 </Link>
                 <Link to={{ pathname: "/dashboard" }}>

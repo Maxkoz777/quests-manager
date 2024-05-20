@@ -7,6 +7,8 @@ interface OrderScrollViewProp {
   execute?: boolean;
   confirm?: boolean;
   finish?: boolean;
+  isLoading: boolean;
+  error?: Error | null;
 }
 
 export const OrderScrollView = ({
@@ -14,7 +16,21 @@ export const OrderScrollView = ({
   execute,
   confirm,
   finish,
+  isLoading,
+  error,
 }: OrderScrollViewProp) => {
+  if (isLoading) {
+    return <>Fetching orders...</>;
+  }
+
+  if (orders?.length === 0) {
+    return <>No orders available</>;
+  }
+
+  if (error) {
+    return <>An error occured please reload your browser</>;
+  }
+
   return (
     <Stack
       sx={{
@@ -25,17 +41,16 @@ export const OrderScrollView = ({
       }}
       spacing={2}
     >
-      {orders &&
-        orders.map((order, idx) => (
-          <OrderCard
-            order={order}
-            idx={idx}
-            key={idx}
-            execute={execute}
-            confirm={confirm}
-            finish={finish}
-          />
-        ))}
+      {orders?.map((order, idx) => (
+        <OrderCard
+          order={order}
+          idx={idx}
+          key={order.id}
+          execute={execute}
+          confirm={confirm}
+          finish={finish}
+        />
+      ))}
     </Stack>
   );
 };

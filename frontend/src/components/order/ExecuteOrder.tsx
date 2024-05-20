@@ -1,43 +1,28 @@
-import axios from "axios";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import { toast } from "react-toastify";
-import { VITE_API_URL } from "../../utils/ApiUtils";
 import { Button } from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { handlePickOrder } from "../../utils/Api";
 
 interface Props {
   orderId: number;
-  setPickStatus?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ExecuteOrder = ({ orderId, setPickStatus }: Props) => {
+export const ExecuteOrder = ({ orderId }: Props) => {
   const authHeader = useAuthHeader();
+  const queryClient = useQueryClient();
 
-  const handlePickOrder = async () => {
-    const result = await toast.promise(
-      axios.post(
-        `${VITE_API_URL}/orders/execution/start/${orderId}`,
-        {},
-        {
-          headers: {
-            Authorization: authHeader,
-          },
-        }
-      ),
-      {
-        pending: "...",
-        success: "Successfully taken",
-        error: "Error taking this order",
-      }
-    );
-
-    if (result.status === 200) {
-      setPickStatus && setPickStatus(true);
-    }
-  };
+  const { mutateAsync } = useMutation({
+    mutationFn: () => handlePickOrder(orderId, authHeader),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["orders", "currentOrders", "takenOrders", "orderDetail"],
+      });
+    },
+  });
 
   return (
     <Button
-      onClick={handlePickOrder}
+      onClick={() => mutateAsync()}
       variant="contained"
       sx={{ marginTop: "1.5rem" }}
     >

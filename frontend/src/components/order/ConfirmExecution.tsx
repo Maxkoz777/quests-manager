@@ -1,8 +1,7 @@
 import { Button } from "@mui/material";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import { VITE_API_URL } from "../../utils/ApiUtils";
-import { toast } from "react-toastify";
-import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { handleConfirmOrder } from "../../utils/Api";
 
 interface ConfirmExecutionProps {
   orderId: number;
@@ -14,33 +13,21 @@ export const ConfirmExecution = ({
   setPickStatus,
 }: ConfirmExecutionProps) => {
   const authHeader = useAuthHeader();
+  const queryClient = useQueryClient();
 
-  const handleConfirmOrder = async () => {
-    const result = await toast.promise(
-      axios.post(
-        `${VITE_API_URL}/orders/execution/validate/${orderId}`,
-        {},
-        {
-          headers: {
-            Authorization: authHeader,
-          },
-        }
-      ),
-      {
-        pending: "...",
-        success: "Execution confirmed",
-        error: "Error confirming this order",
-      }
-    );
-
-    if (result.status === 200) {
+  const { mutateAsync } = useMutation({
+    mutationFn: () => handleConfirmOrder(orderId, authHeader),
+    onSuccess: () => {
       setPickStatus && setPickStatus(true);
-    }
-  };
+      queryClient.invalidateQueries({
+        queryKey: ["createdOrders"],
+      });
+    },
+  });
 
   return (
     <Button
-      onClick={handleConfirmOrder}
+      onClick={() => mutateAsync()}
       variant="contained"
       sx={{ marginTop: "1.5rem" }}
     >
