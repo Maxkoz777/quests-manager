@@ -33,17 +33,20 @@ services:
     restart: unless-stopped
 
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: confluentinc/cp-zookeeper
     container_name: zookeeper
     volumes:
       - kafka_data:/var/lib/kafka/data
     ports:
       - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     networks:
       - postgres
 
   kafka:
-    image: wurstmeister/kafka
+    image: confluentinc/cp-kafka
     container_name: kafka
     volumes:
       - zk_data:/var/lib/zookeeper/data
