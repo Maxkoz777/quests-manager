@@ -101,7 +101,7 @@ public class OrderService {
     @KafkaListener(topics = "payment.reservation.updated")
     public void processPaymentNotification(PaymentReservationMessage message) {
         log.info("Received payment reservation message: {}", message);
-        var notification = new NotificationMessage(message.traceId(), message.orderId(),
+        var notification = new NotificationMessage(message.traceId(), message.executorId(),
                                                    "Payment validated, the task can be executed");
         log.info("Sending payment notification to user");
         var orderOptional = orderRepository.findById(message.orderId());
@@ -139,7 +139,7 @@ public class OrderService {
         log.info("Retrieved order with id={}", order.getId());
         order.setOrderStatus(OrderStatus.EXECUTION_FINISHED);
         log.info("Sending notification for the Order owner for confirmation");
-        var notification = new NotificationMessage(traceId, orderId,
+        var notification = new NotificationMessage(traceId, order.getCreatorId(),
                                                    "Your order \"%s\" was executed, please confirm it".formatted(
                                                        order.getTitle()));
         notificationKafkaTemplate.send("user.notification.order.update", notification)
@@ -172,7 +172,7 @@ public class OrderService {
         } else {
             content = "Payment unsuccessful";
         }
-        var notification = new NotificationMessage(message.traceId(), message.orderId(), content);
+        var notification = new NotificationMessage(message.traceId(), message.executorId(), content);
         log.info("Sending payment notification to user");
         orderRepository.saveAndFlush(order);
         notificationKafkaTemplate.send("user.notification.order.update", notification)
