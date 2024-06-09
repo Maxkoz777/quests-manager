@@ -34,12 +34,12 @@ ToDo
 
 ## :ferry: Docker compose
 
-### Add environment variables in .env file in `/front/` directory
+### Add environment variables in .env file in root directory
 
-Replace `<<placeholder>>` with actual
+Add the following environment variables required to build the front
 
 ```env
-VITE_API_URL=http://localhost:8081/api/v1 #<<replace with order service url>
+VITE_API_URL=http://localhost:8081/api/v1 #<<replace with order service url>>
 VITE_AUTH_LOGIN_URL=http://localhost:8080/realms/prototype/protocol/openid-connect/token #<<replace with keycloak url>>
 VITE_AUTH_GRANT_TYPE=<<place the grant type from keycloak (currently "password")>>
 VITE_AUTH_CLIENT_ID=<<place the client id from keycloak (currently "quests")>>
