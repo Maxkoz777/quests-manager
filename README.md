@@ -34,38 +34,36 @@ ToDo
 
 ## :ferry: Docker compose
 
-### Front (subject to change)
-
-Navigate to `/frontend` directory
-
-```bash
-cd /front
-```
-
-#### Add environment variables in .env file in `/front/` directory
+### Add environment variables in .env file in `/front/` directory
 
 Replace `<<placeholder>>` with actual
 
-```plaintext
-VITE_API_URL=http://localhost:8081/api/v1 #<<this is the order service because we haven't setup api gateway>>
-VITE_AUTH_LOGIN_URL=http://localhost:8080/realms/prototype/protocol/openid-connect/token #<<this is keycloak url>>
-VITE_AUTH_GRANT_TYPE=<<place your grant type from keycload (currently "password")>>
-VITE_AUTH_CLIENT_ID=<<place your client id from keycloak>>
-VITE_AUTH_CLIENT_SECRET=<<place your client secret form keycloak>>
-VITE_AUTH_REGISTER_URL=http://localhost:8082/keycloak/register #<<registration end point from user service>>
+```env
+VITE_API_URL=http://localhost:8081/api/v1 #<<replace with order service url>
+VITE_AUTH_LOGIN_URL=http://localhost:8080/realms/prototype/protocol/openid-connect/token #<<replace with keycloak url>>
+VITE_AUTH_GRANT_TYPE=<<place the grant type from keycloak (currently "password")>>
+VITE_AUTH_CLIENT_ID=<<place the client id from keycloak (currently "quests")>>
+VITE_AUTH_CLIENT_SECRET=<<place the client secret form keycloak>>
+VITE_AUTH_REGISTER_URL=http://localhost:8082/keycloak/register #<<replace with user service url>>
 VITE_APP_TITLE=Quests Manager
 VITE_YANDEX_API_KEY=<<your yandex api key here>>
 ```
 
-#### Build and Run
+### Build and Run
+
+#### To build and run the front
 
 ```bash
-docker compose up -d
+docker compose up -d --build front
 ```
 
-To rebuild the image, add `--build`
+#### To build and run everything
 
-#### Open the [http://localhost:3000](http://localhost:3000) to access the website
+```bash
+docker compose up -d --build
+```
+
+### Open the [http://localhost:3000](http://localhost:3000) or your `http://ip-address:3000` to access the website
 
 ## :bookmark_tabs: Requirements
 

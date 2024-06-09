@@ -1,9 +1,0 @@
-services:
-  quest-front:
-    image: kimfom01/quest-front
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    env_file:
-      - ./.env
-    ports:
-      - 3000:80
