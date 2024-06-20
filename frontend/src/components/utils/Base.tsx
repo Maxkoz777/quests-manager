@@ -8,13 +8,11 @@ interface Prop {
 
 export const Base = ({ children }: Prop) => {
   return (
-    <Box>
-      <Container maxWidth="xl" className="mt-3">
-        <CssBaseline />
-        <NavBar />
-        <Toolbar sx={{ marginBottom: "2rem" }} />
-        <Box>{children}</Box>
-      </Container>
-    </Box>
+    <Container className="mt-3">
+      <CssBaseline />
+      <NavBar />
+      <Toolbar sx={{ marginBottom: "2rem" }} />
+      <Box>{children}</Box>
+    </Container>
   );
 };
