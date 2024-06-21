@@ -10,7 +10,7 @@ export const LogoutButton = () => {
     const signedOut = signOut();
 
     if (signedOut) {
-      navigate("/login");
+      navigate("/auth");
     }
   };
 
