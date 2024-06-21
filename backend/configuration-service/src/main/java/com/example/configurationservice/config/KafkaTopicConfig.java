@@ -9,9 +9,20 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopicConfig {
 
     @Bean
+    public NewTopic consumerOffsetsTopic() {
+        return TopicBuilder.name("__consumer_offsets")
+            .partitions(50)
+            .replicas(1)
+            .config("compression.type", "producer")
+            .config("cleanup.policy", "compact")
+            .config("segment.bytes", "104857600")
+            .build();
+    }
+
+    @Bean
     public NewTopic orderCreationInitiated() {
         return TopicBuilder.name("order.creation.initiated")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -19,7 +30,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic orderExecutionFinished() {
         return TopicBuilder.name("order.execution.finished")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -27,7 +38,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic orderWorkStarted() {
         return TopicBuilder.name("order.work.started")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -35,7 +46,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic orderCreated() {
         return TopicBuilder.name("order.created")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -43,7 +54,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic paymentInitiate() {
         return TopicBuilder.name("payment.initiate")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -51,7 +62,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic fraudCheckInitiate() {
         return TopicBuilder.name("fraud.check.initiate")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -59,7 +70,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic userNotificationOrderUpdate() {
         return TopicBuilder.name("user.notification.order.update")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -67,7 +78,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic fraudCheckCompleted() {
         return TopicBuilder.name("fraud.check.completed")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -75,7 +86,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic paymentReservationUpdated() {
         return TopicBuilder.name("payment.reservation.updated")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -83,7 +94,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic paymentExecution() {
         return TopicBuilder.name("payment.execution")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
@@ -91,9 +102,8 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic orderFinalization() {
         return TopicBuilder.name("order.finalization")
-            .partitions(3)
+            .partitions(1)
             .replicas(1)
             .build();
     }
 }
-
