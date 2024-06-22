@@ -32,3 +32,5 @@ eureka:
   client:
     service-url:
       defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka
+
+#kafka-topics --list --bootstrap-server localhost:9093

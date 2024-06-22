@@ -59,6 +59,9 @@ services:
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093 # Changed OUTSIDE listener to use port 9093
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     networks:
       - postgres
     depends_on:
@@ -112,6 +115,9 @@ services:
       KAFKA_PORT: 9092
       DB_HOST: db
       KEYCLOAK_HOST: keycloak
+      ADMIN_SECRET: YR2oMWokarqeMve0BEua13dbgfojJRx6
+      CLIENT_SECRET: vhkAg5M93C8T1vgrjkdgRlIqiNE7ZctB
+      REALM_NAME: prototype
     depends_on:
       - configuration-service
     networks:
@@ -128,6 +134,8 @@ services:
       KAFKA_PORT: 9092
       DB_HOST: db
       KEYCLOAK_HOST: keycloak
+      CLIENT_SECRET: vhkAg5M93C8T1vgrjkdgRlIqiNE7ZctB
+      REALM_NAME: prototype
     depends_on:
       - configuration-service
     networks:
@@ -144,6 +152,8 @@ services:
       KAFKA_PORT: 9092
       DB_HOST: db
       KEYCLOAK_HOST: keycloak
+      CLIENT_SECRET: vhkAg5M93C8T1vgrjkdgRlIqiNE7ZctB
+      REALM_NAME: prototype
     depends_on:
       - configuration-service
     networks:
@@ -174,6 +184,7 @@ services:
       KAFKA_HOST: kafka
       KAFKA_PORT: 9092
       DB_HOST: db
+      REALM_NAME: prototype
     depends_on:
       - configuration-service
     networks:

@@ -21,13 +21,13 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://${KEYCLOAK_HOST:localhost}:8080/realms/quests
+          issuer-uri: http://${KEYCLOAK_HOST:localhost}:8080/realms/${REALM_NAME:prototype}
 
 springdoc:
   swagger-ui:
     oauth:
-      client-id: quests
-      client-secret: UY2eqScgPZqttFIYkn5Aiv46CwhkY6i7
+      client-id: ${REALM_NAME:prototype}
+      client-secret: ${CLIENT_SECRET:vhkAg5M93C8T1vgrjkdgRlIqiNE7ZctB}
 openapi:
   dev-url: http://localhost:8082
   prod-url: http://localhost:8082
@@ -46,4 +46,4 @@ admin:
     realm:  prototype
     clientId: admin-cli
     grantType: password
-    clientSecret: KxiXXKxGrnBRkw2D5QdDyR44kr9SsCvq
+    clientSecret: ${ADMIN_SECRET:YR2oMWokarqeMve0BEua13dbgfojJRx6}
