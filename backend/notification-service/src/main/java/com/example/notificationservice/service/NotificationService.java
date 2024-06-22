@@ -50,8 +50,8 @@ public class NotificationService {
             .toList();
     }
 
-    public void deleteNotificationById(long notificationId) {
-        log.info("Deleting order with id={}", notificationId);
+    public void deleteNotificationForUserById(String userId, long notificationId) {
+        log.info("Deleting order with id={} for user with id={}", notificationId, userId);
         notificationRepository.deleteById(notificationId);
     }
 
