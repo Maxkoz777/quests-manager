@@ -34,8 +34,9 @@ public class NotificationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNotificationById(@PathVariable long id) {
-        notificationService.deleteNotificationById(id);
+    public ResponseEntity<Void> deleteNotificationById(@PathVariable("id") long id, Principal principal) {
+        var userId = principal.getName();
+        notificationService.deleteNotificationForUserById(userId, id);
         return ResponseEntity.noContent().build();
     }
 }
