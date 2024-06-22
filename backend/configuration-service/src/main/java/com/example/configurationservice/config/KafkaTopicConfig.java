@@ -9,17 +9,6 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopicConfig {
 
     @Bean
-    public NewTopic consumerOffsetsTopic() {
-        return TopicBuilder.name("__consumer_offsets")
-            .partitions(50)
-            .replicas(1)
-            .config("compression.type", "producer")
-            .config("cleanup.policy", "compact")
-            .config("segment.bytes", "104857600")
-            .build();
-    }
-
-    @Bean
     public NewTopic orderCreationInitiated() {
         return TopicBuilder.name("order.creation.initiated")
             .partitions(1)
