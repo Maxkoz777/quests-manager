@@ -11,7 +11,7 @@ import { LockOutlined } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { VITE_AUTH_REGISTER_URL } from "../../utils/ApiUtils";
 import { Base } from "../utils/Base";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -48,29 +48,33 @@ export const Register = () => {
       password,
     };
 
-    const response = await toast.promise(
-      axios.post<RegisterModel>(
-        VITE_AUTH_REGISTER_URL,
-        JSON.stringify(payload),
+    try {
+      const response = await toast.promise(
+        axios.post<RegisterModel>(
+          VITE_AUTH_REGISTER_URL,
+          JSON.stringify(payload),
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        ),
         {
-          headers: { "Content-Type": "application/json" },
+          pending: "Registering...",
+          success: "User successfully registered!",
+          error: "Error registering new user",
         }
-      ),
-      {
-        pending: "Registering...",
-        success: "User successfully registered!",
-        error: "Error registering new user",
+      );
+
+      if (response.status === 204) {
+        reset();
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
       }
-    );
-
-    console.log(response.status);
-
-    if (response.status === 204) {
-      reset();
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.log("Error registering new user");
+      }
     }
   };
 

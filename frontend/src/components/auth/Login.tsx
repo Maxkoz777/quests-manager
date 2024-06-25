@@ -71,9 +71,9 @@ export const Login = () => {
       if (axios.isAxiosError(error)) {
         setLoginError(error.response?.data);
 
-        console.error("Axios error:", error.message);
+        console.log("Error loggin in user");
       } else if (error instanceof Error) {
-        console.error("General error:", error.message);
+        console.error("An Error occured");
       }
     }
   };
