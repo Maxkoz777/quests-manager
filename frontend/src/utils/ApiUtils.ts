@@ -2,6 +2,9 @@ export const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export const VITE_PAYMENT_API_URL = import.meta.env.VITE_PAYMENT_API_URL;
 
+export const VITE_NOTIFICATION_API_URL = import.meta.env
+  .VITE_NOTIFICATION_API_URL;
+
 export const VITE_AUTH_LOGIN_URL = import.meta.env.VITE_AUTH_LOGIN_URL;
 export const VITE_AUTH_GRANT_TYPE = import.meta.env.VITE_AUTH_GRANT_TYPE;
 export const VITE_AUTH_CLIENT_ID = import.meta.env.VITE_AUTH_CLIENT_ID;

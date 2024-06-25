@@ -1,7 +1,12 @@
 import axios from "axios";
 import { Order } from "../models/Order";
-import { VITE_API_URL, VITE_PAYMENT_API_URL } from "./ApiUtils";
+import {
+  VITE_API_URL,
+  VITE_NOTIFICATION_API_URL,
+  VITE_PAYMENT_API_URL,
+} from "./ApiUtils";
 import { toast } from "react-toastify";
+import { Notification } from "../models/Notification";
 
 export const fetchOrders = async (authHeader: string | null) => {
   const { data } = await axios.get<Order[]>(
@@ -125,5 +130,19 @@ export const getAmount = async (authHeader: string | null) => {
       Authorization: authHeader,
     },
   });
+
+  return data;
+};
+
+export const getNotifications = async (authHeader: string | null) => {
+  const { data } = await axios.get<Notification[]>(
+    `${VITE_NOTIFICATION_API_URL}/notifications`,
+    {
+      headers: {
+        Authorization: authHeader,
+      },
+    }
+  );
+
   return data;
 };

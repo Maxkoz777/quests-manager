@@ -16,6 +16,7 @@ import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import { VITE_APP_TITLE } from "../../utils/ApiUtils";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "../../models/User";
+import { ShowNotification } from "../notification/ShowNotification";
 
 export const NavBar = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -167,11 +168,15 @@ export const NavBar = () => {
               </Typography>
             </Link>
           </Box>
-          <Box
-            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: "1" }}
-          >
+          <Box sx={{ display: { xs: "none", md: "flex" }, gap: "1" }}>
             {isAuthenticated() && (
-              <Box sx={{ display: "flex", gap: "20px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexGrow: 1,
+                  gap: "20px",
+                }}
+              >
                 <Link to={{ pathname: "/create-order" }}>
                   <Button variant="contained">Create Order</Button>
                 </Link>
@@ -183,6 +188,7 @@ export const NavBar = () => {
                     <Typography>{auth?.username} Profile</Typography>
                   </Button>
                 </Link>
+                <ShowNotification />
                 <LogoutButton />
               </Box>
             )}
