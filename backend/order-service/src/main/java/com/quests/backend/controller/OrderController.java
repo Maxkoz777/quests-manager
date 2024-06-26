@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/orders")
 @SecurityRequirement(name = "Keycloak")
 @Tag(name = "Order Controller", description = "Order controller APIs")
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000"}, allowCredentials = "true")
 public class OrderController {
 
     private final OrderService orderService;

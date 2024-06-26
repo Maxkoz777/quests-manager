@@ -50,6 +50,11 @@ public class NotificationService {
             .toList();
     }
 
+    public void deleteNotificationForUserById(String userId, long notificationId) {
+        log.info("Deleting order with id={} for user with id={}", notificationId, userId);
+        notificationRepository.deleteById(notificationId);
+    }
+
     private void markNotificationsAsReadForUser(String userId, List<Notification> notifications) {
         notifications.forEach(notification -> notification.setRead(true));
         notificationRepository.saveAllAndFlush(notifications);

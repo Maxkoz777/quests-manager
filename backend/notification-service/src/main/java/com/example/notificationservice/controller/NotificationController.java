@@ -6,13 +6,17 @@ import java.security.Principal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notifications")
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000"}, allowCredentials = "true")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -29,5 +33,12 @@ public class NotificationController {
         var userId = principal.getName();
         var notifications = notificationService.getNewNotifications(userId);
         return ResponseEntity.ok(notifications);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteNotificationById(@PathVariable("id") long id, Principal principal) {
+        var userId = principal.getName();
+        notificationService.deleteNotificationForUserById(userId, id);
+        return ResponseEntity.noContent().build();
     }
 }
