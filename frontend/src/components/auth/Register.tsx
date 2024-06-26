@@ -1,16 +1,5 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { LockOutlined } from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { VITE_AUTH_REGISTER_URL } from "../../utils/ApiUtils";
-import { Base } from "../utils/Base";
 import axios, { isAxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -23,15 +12,17 @@ interface RegisterModel {
   password: string;
 }
 
-export const Register = () => {
+interface RegisterProps {
+  setLoginToggle: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const Register = ({ setLoginToggle }: RegisterProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<RegisterModel>();
-
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<RegisterModel> = async ({
     firstName,
@@ -68,7 +59,7 @@ export const Register = () => {
         reset();
 
         setTimeout(() => {
-          navigate("/login");
+          setLoginToggle(true);
         }, 2000);
       }
     } catch (err) {
@@ -79,94 +70,86 @@ export const Register = () => {
   };
 
   return (
-    <Base>
-      <Container maxWidth="xs">
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col text-xl *:my-2 *:md:my-3">
+        <div className="flex flex-col w-full">
+          <label htmlFor="username" className="text-sm">
+            Username
+          </label>
+          <input
+            required
+            id="username"
+            className="text-sm p-1"
+            placeholder="Enter username"
+            {...register("username", { required: true })}
+          />
+        </div>
+        {errors.username && <span>This field is required</span>}
+        <div className="flex flex-col w-full">
+          <label htmlFor="firstName" className="text-sm">
+            First Name
+          </label>
+          <input
+            required
+            id="firstName"
+            className="text-sm p-1"
+            placeholder="Enter first name"
+            {...register("firstName", { required: true })}
+          />
+          {errors.firstName && <span>This field is required</span>}
+        </div>
+        <div className="flex flex-col w-full">
+          <label htmlFor="lastName" className="text-sm">
+            Last Name
+          </label>
+          <input
+            required
+            id="lastName"
+            className="text-sm p-1"
+            placeholder="Enter last name"
+            {...register("lastName", { required: true })}
+          />
+          {errors.lastName && <span>This field is required</span>}
+        </div>
+        <div className="flex flex-col w-full">
+          <label htmlFor="email" className="text-sm">
+            Email Address
+          </label>
+          <input
+            required
+            id="email"
+            type="email"
+            className="text-sm p-1"
+            placeholder="Enter email address"
+            {...register("email", { required: true })}
+          />
+          {errors.email && <span>This field is required</span>}
+        </div>
+        <div className="flex flex-col w-full">
+          <label htmlFor="password" className="text-sm">
+            Password
+          </label>
+          <input
+            required
+            id="password"
+            type="password"
+            className="text-sm p-1"
+            placeholder="Enter password"
+            {...register("password", { required: true })}
+          />
+          {errors.password && <span>This field is required</span>}
+        </div>
+
+        <button
+          type="submit"
+          className="bg-red-500 text-white text-xl border-none py-1 active:bg-red-600 hover:bg-red-600 w-full rounded-lg shadow-lg hover:shadow-xl"
         >
-          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
-            <LockOutlined />
-          </Avatar>
-          <Typography variant="h5">Register</Typography>
-          <Box sx={{ mt: 1, width: "100%" }}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                autoFocus
-                {...register("username", { required: true })}
-              />
-              {errors.username && <span>This field is required</span>}
-              <Grid item xs={12}>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  {...register("firstName", { required: true })}
-                />
-                {errors.firstName && <span>This field is required</span>}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  {...register("lastName", { required: true })}
-                />
-                {errors.lastName && <span>This field is required</span>}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  type="email"
-                  {...register("email", { required: true })}
-                />
-                {errors.email && <span>This field is required</span>}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="password"
-                  label="Password"
-                  type="password"
-                  {...register("password", { required: true })}
-                />
-                {errors.password && <span>This field is required</span>}
-              </Grid>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                type="submit"
-              >
-                Register
-              </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link to="/login">Already have an account? Login</Link>
-                </Grid>
-              </Grid>
-            </form>
-          </Box>
-        </Box>
-      </Container>
-    </Base>
+          Register
+        </button>
+        <div className="text-sm flex flex-col items-end">
+          <Link to="/login">Already have an account? Login</Link>
+        </div>
+      </div>
+    </form>
   );
 };

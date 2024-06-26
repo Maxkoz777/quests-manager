@@ -1,6 +1,4 @@
-import { Base } from "./utils/Base";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import { Grid, Paper } from "@mui/material";
 import { MapView } from "./map/MapView";
 import { OrderScrollView } from "./order/OrderScrollView";
 import { useQuery } from "@tanstack/react-query";
@@ -20,24 +18,24 @@ export const Home = () => {
   });
 
   return (
-    <Base>
-      <Grid container spacing={2} sx={{ height: "calc(100vh - 6rem)" }}>
-        <Grid item xs={12} md={3}>
-          {
-            <OrderScrollView
-              orders={orders}
-              execute={true}
-              isLoading={isLoading}
-              error={error}
-            />
-          }
-        </Grid>
-        <Grid item xs={0} sx={{ display: { xs: "none", md: "block" } }} md={9}>
-          <Paper elevation={3} sx={{ height: "100%" }}>
-            <MapView create={false} orders={orders} />
-          </Paper>
-        </Grid>
-      </Grid>
-    </Base>
+    <>
+      {/* need a header*/}
+      <div className="font-bold h-11 text-2xl flex justify-center">Quests</div>
+      <div className="grid lg:grid-cols-12 gap-1">
+        <MapView
+          create={false}
+          orders={orders}
+          className="lg:col-span-9 h-80 lg:h-full rounded-lg lg:order-last"
+        />
+        <div className="lg:col-span-3">
+          <OrderScrollView
+            orders={orders}
+            execute={true}
+            isLoading={isLoading}
+            error={error}
+          />
+        </div>
+      </div>
+    </>
   );
 };

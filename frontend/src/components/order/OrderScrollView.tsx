@@ -1,4 +1,3 @@
-import { Stack } from "@mui/material";
 import { Order } from "../../models/Order";
 import { OrderCard } from "./OrderCard";
 
@@ -19,38 +18,20 @@ export const OrderScrollView = ({
   isLoading,
   error,
 }: OrderScrollViewProp) => {
-  if (isLoading) {
-    return <>Fetching orders...</>;
-  }
-
-  if (orders?.length === 0) {
-    return <>No orders available</>;
-  }
-
-  if (error) {
-    return <>An error occured please reload your browser</>;
-  }
-
   return (
-    <Stack
-      sx={{
-        backgroundColor: "#f1f1f1",
-        height: "calc(100vh - 8rem)",
-        overflow: "scroll",
-        padding: "10px",
-      }}
-      spacing={2}
-    >
-      {orders?.map((order, idx) => (
+    <div className="overflow-y-scroll p-3 flex flex-col gap-2">
+      {isLoading && <>Fetching orders...</>}
+      {orders?.length === 0 && <>No orders available</>}
+      {error && <>An error occured please reload your browser</>}
+      {orders?.map((order) => (
         <OrderCard
           order={order}
-          idx={idx}
           key={order.id}
           execute={execute}
           confirm={confirm}
           finish={finish}
         />
       ))}
-    </Stack>
+    </div>
   );
 };

@@ -1,21 +1,14 @@
-import { Typography } from "@mui/material";
-
-interface Prop {
+interface Props {
   text: string;
+  className?: string;
 }
 
-export const TruncatedText = ({ text }: Prop) => {
+export const TruncatedText = ({ text, className }: Props) => {
   return (
-    <Typography
-      sx={{
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-      }}
-      variant="h6"
-      component="div"
+    <div
+      className={`whitespace-nowrap overflow-hidden text-ellipsis ${className}`}
     >
       {text}
-    </Typography>
+    </div>
   );
 };

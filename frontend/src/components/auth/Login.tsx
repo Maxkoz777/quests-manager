@@ -1,13 +1,3 @@
-import { LockOutlined } from "@mui/icons-material";
-import {
-  Container,
-  Box,
-  Avatar,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-} from "@mui/material";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -19,7 +9,6 @@ import {
 import axios, { AxiosResponse } from "axios";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { User } from "../../models/User";
-import { Base } from "../utils/Base";
 
 interface LoginResponse {
   access_token: string;
@@ -79,68 +68,52 @@ export const Login = () => {
   };
 
   return (
-    <Base>
-      <Container maxWidth="xs">
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+    <div className="flex flex-col text-xl *:my-3">
+      <div className="flex flex-col w-full">
+        <label htmlFor="username" className="text-sm">
+          Username
+        </label>
+        <input
+          required
+          id="username"
+          name="username"
+          value={username}
+          className="text-sm p-1"
+          placeholder="Enter username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+      </div>
+      <div className="flex flex-col w-full">
+        <label htmlFor="password" className="text-sm">
+          Password
+        </label>
+        <input
+          required
+          id="password"
+          name="password"
+          type="password"
+          value={password}
+          className="text-sm p-1"
+          placeholder="Enter password"
+          onChange={(e) => {
+            setPassword(e.target.value);
           }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
-            <LockOutlined />
-          </Avatar>
-          <Typography variant="h5">Login</Typography>
-          <Box sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+        />
+      </div>
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
+      {loginError && (
+        <span className="text-red-500">{loginError?.error_description}</span>
+      )}
 
-            {loginError && (
-              <Typography sx={{ color: "#ff0000" }}>
-                {loginError?.error_description}
-              </Typography>
-            )}
-
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleLogin}
-            >
-              Login
-            </Button>
-            <Grid container justifyContent={"flex-end"}>
-              <Grid item>
-                <Link to="/register">Don't have an account? Register</Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </Base>
+      <button
+        onClick={handleLogin}
+        className="bg-red-500 text-white text-xl border-none py-1 active:bg-red-600 hover:bg-red-600 w-full rounded-lg shadow-lg hover:shadow-xl"
+      >
+        Login
+      </button>
+      <div className="text-sm flex flex-col items-end">
+        <Link to="/register">Don't have an account? Register</Link>
+      </div>
+    </div>
   );
 };
