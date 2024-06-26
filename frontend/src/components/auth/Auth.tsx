@@ -54,7 +54,11 @@ export const Auth = () => {
                 <hr className={`w-full ${loginToggle && "border-slate-200"}`} />
               </button>
             </div>
-            {loginToggle ? <Login /> : <Register />}
+            {loginToggle ? (
+              <Login />
+            ) : (
+              <Register setLoginToggle={setLoginToggle} />
+            )}
           </div>
         </div>
       </div>

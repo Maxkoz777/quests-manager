@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { VITE_AUTH_REGISTER_URL } from "../../utils/ApiUtils";
 import axios, { isAxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -12,15 +12,17 @@ interface RegisterModel {
   password: string;
 }
 
-export const Register = () => {
+interface RegisterProps {
+  setLoginToggle: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const Register = ({ setLoginToggle }: RegisterProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<RegisterModel>();
-
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<RegisterModel> = async ({
     firstName,
@@ -57,7 +59,7 @@ export const Register = () => {
         reset();
 
         setTimeout(() => {
-          navigate("/login");
+          setLoginToggle(true);
         }, 2000);
       }
     } catch (err) {
