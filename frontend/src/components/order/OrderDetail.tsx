@@ -2,7 +2,7 @@ import { Box, Grid, Paper, SxProps, Theme, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { MapView } from "../map/MapView";
-import { ExecuteOrder } from "./ExecuteOrder";
+import { TakeOrder } from "./TakeOrder";
 import { FinishExecution } from "./FinishExecution";
 import prettyMilliseconds from "pretty-ms";
 import { useQuery } from "@tanstack/react-query";
@@ -101,7 +101,7 @@ export const OrderDetail = () => {
                   />
                 )}
                 <Box sx={{ gap: "1rem", display: "flex" }}>
-                  <ExecuteOrder orderId={id} />
+                  <TakeOrder orderId={id} />
                   <FinishExecution orderId={id} />
                 </Box>
               </>

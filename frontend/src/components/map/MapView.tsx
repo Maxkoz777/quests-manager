@@ -16,6 +16,7 @@ interface Props {
   orders?: Order[];
   setCoordinates?: React.Dispatch<React.SetStateAction<Coordinate | undefined>>;
   setLocationPicked?: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string;
 }
 
 export const MapView = ({
@@ -24,6 +25,7 @@ export const MapView = ({
   setCoordinates,
   orders,
   setLocationPicked,
+  className,
 }: Props) => {
   const userCoordinates = useUserCoordinates();
 
@@ -45,6 +47,7 @@ export const MapView = ({
             zoom: 11,
           }}
           onClick={handleClick}
+          className={className}
         >
           <MapContent
             create={create}

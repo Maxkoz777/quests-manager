@@ -1,5 +1,4 @@
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
-import { Button } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handlePickOrder } from "../../utils/Api";
 
@@ -7,7 +6,7 @@ interface Props {
   orderId: number;
 }
 
-export const ExecuteOrder = ({ orderId }: Props) => {
+export const TakeOrder = ({ orderId }: Props) => {
   const authHeader = useAuthHeader();
   const queryClient = useQueryClient();
 
@@ -21,12 +20,11 @@ export const ExecuteOrder = ({ orderId }: Props) => {
   });
 
   return (
-    <Button
+    <button
       onClick={() => mutateAsync()}
-      variant="contained"
-      sx={{ marginTop: "1.5rem" }}
+      className="bg-transparent border-red-500 hover:bg-red-500 hover:text-white hover:border-none active:bg-red-500 active:text-white active:border-none focus:bg-red-500 focus:text-white focus:border-none font-semibold p-1 rounded"
     >
       Take Order
-    </Button>
+    </button>
   );
 };
