@@ -8,6 +8,7 @@ interface OrderScrollViewProp {
   finish?: boolean;
   isLoading: boolean;
   error?: Error | null;
+  className?: string;
 }
 
 export const OrderScrollView = ({
@@ -17,9 +18,10 @@ export const OrderScrollView = ({
   finish,
   isLoading,
   error,
+  className,
 }: OrderScrollViewProp) => {
   return (
-    <div className="overflow-y-scroll p-3 flex flex-col gap-2">
+    <div className={`p-3 flex flex-col gap-2 ${className}`}>
       {isLoading && <>Fetching orders...</>}
       {orders?.length === 0 && <>No orders available</>}
       {error && <>An error occured please reload your browser</>}

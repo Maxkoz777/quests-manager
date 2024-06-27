@@ -23,7 +23,7 @@ export const OrderCard = ({
       to={{ pathname: `/order-detail/${order.id}` }}
       className="no-underline text-black visited:text-black"
     >
-      <div className="flex justify-between p-3 shadow-lg focus:shadow-xl hover:shadow-xl rounded">
+      <div className="flex justify-between items-center p-3 shadow-lg focus:shadow-xl hover:shadow-xl border rounded">
         <div className="flex flex-col">
           <TruncatedText text={order.title} />
           <TruncatedText text={`Cost: ${order.cost}`} className="italic" />

@@ -18,25 +18,20 @@ export const Home = () => {
   });
 
   return (
-    <div className="lg:h-screen">
+    <div className="lg:h-screen grid grid-rows-[auto_1fr]">
       {/* need a header*/}
       <div className="font-bold h-11 text-2xl flex justify-center">Quests</div>
-      <div className="grid lg:grid-cols-12 gap-1">
-        <div className="lg:col-span-9 h-80 lg:h-[90%] lg:order-last shadow-xl ">
-          <MapView
-            create={false}
-            orders={orders}
-            className="shadow-inner rounded-lg"
-          />
+      <div className="grid lg:grid-cols-12 gap-1 h-full">
+        <div className="lg:col-span-9 h-80 md:h-96 lg:h-full lg:order-last border shadow-inner rounded-lg">
+          <MapView create={false} orders={orders} />
         </div>
-        <div className="lg:col-span-3">
-          <OrderScrollView
-            orders={orders}
-            execute={true}
-            isLoading={isLoading}
-            error={error}
-          />
-        </div>
+        <OrderScrollView
+          orders={orders}
+          execute={true}
+          isLoading={isLoading}
+          error={error}
+          className="lg:col-span-3 overflow-y-scroll h-96 md:h-2/3 lg:h-full"
+        />
       </div>
     </div>
   );
