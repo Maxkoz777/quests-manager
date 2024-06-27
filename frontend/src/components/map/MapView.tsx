@@ -40,14 +40,12 @@ export const MapView = ({
     <>
       {userCoordinates && (
         <Map
-          width={"100%"}
-          height={"100%"}
           defaultState={{
             center: [userCoordinates?.latitude, userCoordinates?.longitude],
             zoom: 11,
           }}
           onClick={handleClick}
-          className={className}
+          className={`w-full h-full ${className}`}
         >
           <MapContent
             create={create}

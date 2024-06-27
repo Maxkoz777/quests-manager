@@ -7,8 +7,8 @@ export const Auth = () => {
   const [loginToggle, setLoginToggle] = useState(true);
 
   return (
-    <div className="lg:flex mt-12 md:mt-24">
-      <div className="flex items-center justify-center h-full w-full">
+    <div className="lg:flex pt-12 md:pt-24">
+      <div className="flex items-center lg:justify-start h-full w-full">
         <div className="flex flex-col w-full md:w-6/12 mx-4">
           <div className="flex flex-col">
             {loginToggle ? (
@@ -41,7 +41,9 @@ export const Auth = () => {
               >
                 <div className="font-bold">Login</div>
                 <hr
-                  className={`w-full ${!loginToggle && "border-slate-200"}`}
+                  className={`w-full ${loginToggle && "border-slate-500"} ${
+                    !loginToggle && "border-slate-200"
+                  }`}
                 />
               </button>
               <button
@@ -51,7 +53,11 @@ export const Auth = () => {
                 onClick={() => setLoginToggle(false)}
               >
                 <div className="font-bold">Register</div>
-                <hr className={`w-full ${loginToggle && "border-slate-200"}`} />
+                <hr
+                  className={`w-full ${!loginToggle && "border-slate-500"} ${
+                    loginToggle && "border-slate-200"
+                  }`}
+                />
               </button>
             </div>
             {loginToggle ? (

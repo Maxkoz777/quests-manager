@@ -12,7 +12,6 @@ import { VITE_YANDEX_API_KEY } from "./utils/ApiUtils.ts";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { StyledEngineProvider } from "@mui/material/styles";
 
 const store = createStore<User>({
   authName: "_auth",
@@ -38,9 +37,7 @@ root.render(
         >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <QueryClientProvider client={queryClient}>
-              <StyledEngineProvider injectFirst>
-                <App />
-              </StyledEngineProvider>
+              <App />
             </QueryClientProvider>
           </LocalizationProvider>
         </YMaps>

@@ -79,7 +79,7 @@ export const Register = ({ setLoginToggle }: RegisterProps) => {
           <input
             required
             id="username"
-            className="text-sm p-1"
+            className="text-sm p-1 border border-slate-500 rounded-lg"
             placeholder="Enter username"
             {...register("username", { required: true })}
           />
@@ -92,7 +92,7 @@ export const Register = ({ setLoginToggle }: RegisterProps) => {
           <input
             required
             id="firstName"
-            className="text-sm p-1"
+            className="text-sm p-1 border border-slate-500 rounded-lg"
             placeholder="Enter first name"
             {...register("firstName", { required: true })}
           />
@@ -105,7 +105,7 @@ export const Register = ({ setLoginToggle }: RegisterProps) => {
           <input
             required
             id="lastName"
-            className="text-sm p-1"
+            className="text-sm p-1 border border-slate-500 rounded-lg"
             placeholder="Enter last name"
             {...register("lastName", { required: true })}
           />
@@ -119,7 +119,7 @@ export const Register = ({ setLoginToggle }: RegisterProps) => {
             required
             id="email"
             type="email"
-            className="text-sm p-1"
+            className="text-sm p-1 border border-slate-500 rounded-lg"
             placeholder="Enter email address"
             {...register("email", { required: true })}
           />
@@ -133,7 +133,7 @@ export const Register = ({ setLoginToggle }: RegisterProps) => {
             required
             id="password"
             type="password"
-            className="text-sm p-1"
+            className="text-sm p-1 border border-slate-500 rounded-lg"
             placeholder="Enter password"
             {...register("password", { required: true })}
           />

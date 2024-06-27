@@ -78,7 +78,7 @@ export const Login = () => {
           id="username"
           name="username"
           value={username}
-          className="text-sm p-1"
+          className="text-sm p-1 border border-slate-500 rounded-lg"
           placeholder="Enter username"
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -93,7 +93,7 @@ export const Login = () => {
           name="password"
           type="password"
           value={password}
-          className="text-sm p-1"
+          className="text-sm p-1 border border-slate-500 rounded-lg"
           placeholder="Enter password"
           onChange={(e) => {
             setPassword(e.target.value);
